@@ -1,35 +1,14 @@
 {
-  "dependencies": {
-    "body-parser": "^1.20.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.0",
-    "express": "^4.18.1",
-    "joi": "^17.6.0",
-    "mongodb": "^4.5.0",
-    "mongoose": "^6.3.1",
-    "node": "^17.7.2",
-    "nodemon": "^2.0.16"
-  },
-  "name": "t.c.c-backend",
-  "description": "",
-  "version": "1.0.0",
-  "main": "app.js",
   "devDependencies": {
-    "nodemon": "^2.0.16"
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.32",
+    "ts-node": "^10.7.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.6.4"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./AppCER/src/app.js",
-    "dev": "nodemon ./AppCER//src/app.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/danilocsm/t.c.c-backend.git"
-  },
-  "author": "Danilo César Medeiros",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/danilocsm/t.c.c-backend/issues"
-  },
-  "homepage": "https://github.com/danilocsm/t.c.c-backend#readme"
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.1"
+  }
 }
