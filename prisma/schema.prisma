@@ -11,3 +11,68 @@ datasource db {
 }
 
 // models go here
+model User {
+  id          String        @id @default(uuid())
+  username    String        @unique
+  password    String
+  role        Role          @default(USER)
+  Testimonial Testimonial[]
+
+  @@map("users")
+}
+
+model Activity {
+  id          Int        @id @default(autoincrement())
+  description String
+  items       Item[]
+  illnesses   Illness[]
+  difficulty  Difficulty
+
+  @@map("actvities")
+}
+
+model Item {
+  id        Int        @id @default(autoincrement())
+  name      String
+  price     Decimal
+  link      String?
+  actvities Activity[]
+
+  @@map("items")
+}
+
+model Illness {
+  id          Int        @id @default(autoincrement())
+  description String
+  symptom     String
+  activities  Activity[]
+
+  @@map("illnesses")
+}
+
+model Testimonial {
+  id     Int     @id @default(autoincrement())
+  text   String
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  @@map("testimonials")
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+  VERY_HARD
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum ItemType {
+  TOY
+  CLOATH
+  ACCESSORY
+}
