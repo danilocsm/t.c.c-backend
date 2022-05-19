@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -15,18 +15,18 @@ model User {
   id          String        @id @default(uuid())
   username    String        @unique
   password    String
-  role        Role          @default(USER)
+  isAdmin     Boolean       @default(false)
   Testimonial Testimonial[]
 
   @@map("users")
 }
 
 model Activity {
-  id          Int        @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   description String
   items       Item[]
   illnesses   Illness[]
-  difficulty  Difficulty
+  difficulty  Int
 
   @@map("actvities")
 }
@@ -36,6 +36,7 @@ model Item {
   name      String
   price     Decimal
   link      String?
+  itemType  Int
   actvities Activity[]
 
   @@map("items")
@@ -59,20 +60,20 @@ model Testimonial {
   @@map("testimonials")
 }
 
-enum Difficulty {
-  EASY
-  MEDIUM
-  HARD
-  VERY_HARD
-}
+// enum Difficulty {
+//   EASY
+//   MEDIUM
+//   HARD
+//   VERY_HARD
+// }
 
-enum Role {
-  USER
-  ADMIN
-}
+// enum Role {
+//   USER
+//   ADMIN
+// }
 
-enum ItemType {
-  TOY
-  CLOATH
-  ACCESSORY
-}
+// enum ItemType {
+//   TOY
+//   CLOATH
+//   ACCESSORY
+// }
