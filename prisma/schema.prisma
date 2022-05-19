@@ -6,13 +6,13 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 // models go here
 model User {
-  id          String        @id @default(uuid())
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
   username    String        @unique
   password    String
   isAdmin     Boolean       @default(false)
@@ -22,58 +22,44 @@ model User {
 }
 
 model Activity {
-  id          Int       @id @default(autoincrement())
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
   description String
-  items       Item[]
-  illnesses   Illness[]
+  itemsId     String[]  @db.ObjectId
+  items       Item[]    @relation(fields: [itemsId], references: [id])
+  illnessesId String[]  @db.ObjectId
+  illnesses   Illness[] @relation(fields: [illnessesId], references: [id])
   difficulty  Int
 
-  @@map("actvities")
+  @@map("activities")
 }
 
 model Item {
-  id        Int        @id @default(autoincrement())
-  name      String
-  price     Decimal
-  link      String?
-  itemType  Int
-  actvities Activity[]
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  price        Float
+  link         String?
+  itemType     Int
+  activitiesId String[]   @db.ObjectId
+  activities   Activity[] @relation(fields: [activitiesId], references: [id])
 
   @@map("items")
 }
 
 model Illness {
-  id          Int        @id @default(autoincrement())
-  description String
-  symptom     String
-  activities  Activity[]
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  description  String
+  symptom      String
+  activitiesId String[]   @db.ObjectId
+  activities   Activity[] @relation(fields: [activitiesId], references: [id])
 
   @@map("illnesses")
 }
 
 model Testimonial {
-  id     Int     @id @default(autoincrement())
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
   text   String
   user   User?   @relation(fields: [userId], references: [id])
-  userId String?
+  userId String? @db.ObjectId
 
   @@map("testimonials")
 }
-
-// enum Difficulty {
-//   EASY
-//   MEDIUM
-//   HARD
-//   VERY_HARD
-// }
-
-// enum Role {
-//   USER
-//   ADMIN
-// }
-
-// enum ItemType {
-//   TOY
-//   CLOATH
-//   ACCESSORY
-// }
