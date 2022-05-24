@@ -1,3 +1,5 @@
+import { Item } from "@prisma/client";
+
 export interface ItemCreateData {
     name: string;
     price: number;
@@ -6,10 +8,10 @@ export interface ItemCreateData {
 }
 
 export interface ItemsRepository {
-    create: (item: ItemCreateData) => Promise<Object>;
-    update: (id: string, newData: ItemCreateData) => Promise<Object>;
+    create: (item: ItemCreateData) => Promise<Item>;
+    update: (id: string, newData: ItemCreateData) => Promise<Item>;
     delete: (id: string) => Promise<void>;
-    getAll: () => Promise<Object[]>;
-    getById: (id: string) => Promise<Object|null>;
+    getAll: () => Promise<Item[]>;
+    getById: (id: string) => Promise<Item|null>;
     addActivity: (activityId: string, itemId: string) => Promise<void>;
 }

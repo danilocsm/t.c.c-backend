@@ -1,4 +1,3 @@
-import { on } from "events";
 import { ItemCreateData } from "../repositories/items.repository";
 import { ItemsRepositoryImpl } from "../services/items.service";
 
