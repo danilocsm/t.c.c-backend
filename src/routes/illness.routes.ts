@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { IllnessController } from "../controllers/illness.controller";
-import { IllnessRepositoryImpl } from "../services/illness.service";
+import { IllnessRepositoryImpl } from "../services//prisma/illness.service";
 
 const illnessController = new IllnessController(new IllnessRepositoryImpl());
 

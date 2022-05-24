@@ -1,9 +1,9 @@
 import { Item } from "@prisma/client";
-import { prisma } from "../prisma";
+import { prisma } from "../../prisma";
 import {
   ItemCreateData,
   ItemsRepository,
-} from "../repositories/items.repository";
+} from "../../repositories/items.repository";
 
 export class ItemsRepositoryImpl implements ItemsRepository {
   async create({ name, price, link, itemType }: ItemCreateData): Promise<Item> {

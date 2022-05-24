@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { ItemsController } from "../controllers/items.controller";
-import { ItemsRepositoryImpl } from "../services/items.service";
+import { ItemsRepositoryImpl } from "../services/prisma/items.service";
 
 const itemsController = new ItemsController(new ItemsRepositoryImpl());
 

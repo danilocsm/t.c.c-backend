@@ -1,5 +1,5 @@
 import { ItemCreateData } from "../repositories/items.repository";
-import { ItemsRepositoryImpl } from "../services/items.service";
+import { ItemsRepositoryImpl } from "../services//prisma/items.service";
 
 export class ItemsController {
   constructor(private itemsService: ItemsRepositoryImpl) {}

@@ -1,5 +1,5 @@
 import { IllnessCreateData } from "../repositories/illness.repository";
-import { IllnessRepositoryImpl } from "../services/illness.service";
+import { IllnessRepositoryImpl } from "../services/prisma/illness.service";
 
 export class IllnessController {
   constructor(private illnessService: IllnessRepositoryImpl) {}

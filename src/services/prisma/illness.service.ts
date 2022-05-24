@@ -1,9 +1,9 @@
 import { Illness } from "@prisma/client";
-import { prisma } from "../prisma";
+import { prisma } from "../../prisma";
 import {
   IllnessCreateData,
   IllnessRepository,
-} from "../repositories/illness.repository";
+} from "../../repositories/illness.repository";
 
 export class IllnessRepositoryImpl implements IllnessRepository {
   async create({
