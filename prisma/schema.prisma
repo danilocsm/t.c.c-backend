@@ -46,11 +46,13 @@ model Item {
 }
 
 model Illness {
-  id           String     @id @default(auto()) @map("_id") @db.ObjectId
-  description  String
-  symptom      String
-  activitiesId String[]   @db.ObjectId
-  activities   Activity[] @relation(fields: [activitiesId], references: [id])
+  id               String     @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  description      String
+  symptoms         String[]
+  levelOfAttention Int
+  activitiesId     String[]   @db.ObjectId
+  activities       Activity[] @relation(fields: [activitiesId], references: [id])
 
   @@map("illnesses")
 }
