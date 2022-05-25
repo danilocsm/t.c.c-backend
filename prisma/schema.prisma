@@ -15,20 +15,20 @@ model User {
   id          String        @id @default(auto()) @map("_id") @db.ObjectId
   username    String        @unique
   password    String
-  isAdmin     Boolean       @default(false)
+  role        Role          @default(USER)
   Testimonial Testimonial[]
 
   @@map("users")
 }
 
 model Activity {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
   description String
-  itemsId     String[]  @db.ObjectId
-  items       Item[]    @relation(fields: [itemsId], references: [id])
-  illnessesId String[]  @db.ObjectId
-  illnesses   Illness[] @relation(fields: [illnessesId], references: [id])
-  difficulty  Int
+  itemsId     String[]   @db.ObjectId
+  items       Item[]     @relation(fields: [itemsId], references: [id])
+  illnessesId String[]   @db.ObjectId
+  illnesses   Illness[]  @relation(fields: [illnessesId], references: [id])
+  difficulty  Difficulty
 
   @@map("activities")
 }
@@ -38,7 +38,7 @@ model Item {
   name         String
   price        Float
   link         String?
-  itemType     Int
+  itemType     ItemType
   activitiesId String[]   @db.ObjectId
   activities   Activity[] @relation(fields: [activitiesId], references: [id])
 
@@ -46,11 +46,13 @@ model Item {
 }
 
 model Illness {
-  id           String     @id @default(auto()) @map("_id") @db.ObjectId
-  description  String
-  symptom      String
-  activitiesId String[]   @db.ObjectId
-  activities   Activity[] @relation(fields: [activitiesId], references: [id])
+  id               String           @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  description      String
+  symptoms         String[]
+  levelOfAttention LevelOfAttention
+  activitiesId     String[]         @db.ObjectId
+  activities       Activity[]       @relation(fields: [activitiesId], references: [id])
 
   @@map("illnesses")
 }
@@ -62,4 +64,29 @@ model Testimonial {
   userId String? @db.ObjectId
 
   @@map("testimonials")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+  VERY_HARD
+}
+
+enum LevelOfAttention {
+  LOW
+  AVERAGE
+  HIGH
+  VERY_HIGH
+}
+
+enum ItemType {
+  TOY
+  ACCESSORY
+  CLOTHING
 }
