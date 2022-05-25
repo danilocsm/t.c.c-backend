@@ -1,14 +1,14 @@
-import { Illness } from "@prisma/client";
+import { Illness, LevelOfAttention } from "@prisma/client";
 
 export interface IllnessCreateData {
     name: string;
     description: string;
     symptoms: string[];
-    levelOfAttention: number;
+    levelOfAttention: LevelOfAttention;
 }
 
 export interface IllnessRepository {
-    create( { name, description, symptoms, levelOfAttention }:IllnessCreateData ): Promise<Illness>;
+    create(illness: IllnessCreateData ): Promise<Illness>;
     update(id:string, newData: IllnessCreateData ): Promise<Illness>;
     delete(id:string): Promise<void>;
     getAll(): Promise<Illness[]>;

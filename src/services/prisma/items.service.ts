@@ -43,8 +43,8 @@ export class ItemsRepositoryImpl implements ItemsRepository {
       where: { id: activityId },
     });
 
-    if (targetItem == null) return;
-    if (targetActivity == null) return;
+    if (targetItem == null) throw new Error();
+    if (targetActivity == null) throw new Error();
 
     targetItem.activitiesId.push(activityId);
     await prisma.illness.update({

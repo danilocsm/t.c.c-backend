@@ -1,10 +1,10 @@
-import { Item } from "@prisma/client";
+import { Item, ItemType } from "@prisma/client";
 
 export interface ItemCreateData {
     name: string;
     price: number;
     link?: string;
-    itemType: number;
+    itemType: ItemType;
 }
 
 export interface ItemsRepository {
