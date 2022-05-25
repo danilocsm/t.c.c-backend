@@ -5,7 +5,7 @@ import { ItemsRepositoryImpl } from "../services/prisma/items.service";
 export class ItemsController {
   constructor(private readonly itemsService: ItemsRepositoryImpl) {}
 
-  async createItem(req: Request, res: Response) {
+  readonly createItem = async (req: Request, res: Response) => {
     const { name, price, link, itemType } = req.body;
     try {
       const newItem = await this.itemsService.create({
@@ -22,7 +22,7 @@ export class ItemsController {
     }
   }
 
-  async getUnique(req: Request, res: Response) {
+  readonly getUnique = async (req: Request, res: Response) => {
     const itemId = req.params.id;
     try {
       const itemRetrieved = await this.itemsService.getById(itemId);
@@ -34,7 +34,7 @@ export class ItemsController {
     }
   }
 
-  async getAllItems(req: Request, res: Response) {
+  readonly getAllItems = async (req: Request, res: Response) => {
     try {
       const allItems = await this.itemsService.getAll();
       return res.status(201).json(allItems);
@@ -45,7 +45,7 @@ export class ItemsController {
     }
   }
 
-  async updateItem(req: Request, res: Response) {
+  readonly updateItem = async (req: Request, res: Response) => {
     const itemId = req.params.id;
     const newData = req.body;
     try {
@@ -58,7 +58,7 @@ export class ItemsController {
     }
   }
 
-  async deleteItem(req: Request, res: Response) {
+  readonly deleteItem = async (req: Request, res: Response) => {
     const itemId = req.params.id;
     try {
       await this.itemsService.delete(itemId);
@@ -70,7 +70,7 @@ export class ItemsController {
     }
   }
 
-  async addActivityToItem(req: Request, res: Response) {
+  readonly addActivityToItem = async (req: Request, res: Response) => {
     const itemId = req.params.id;
     const activityId = req.body.activityId;
     try {

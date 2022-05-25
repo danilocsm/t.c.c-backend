@@ -2,9 +2,9 @@ import { Request, Response } from "express";
 import { ActivityRepositoryImpl } from "../services/prisma/activities.service";
 
 export class ActivityController {
-  constructor(private readonly activityService: ActivityRepositoryImpl) {}
+  constructor(private activityService: ActivityRepositoryImpl) {}
 
-  async createActivity(req: Request, res: Response) {
+  readonly createActivity = async (req: Request, res: Response) => {
     const { description, difficulty, itemsId, illnessesId, images } = req.body;
     try {
       const activityCreated = await this.activityService.create({
@@ -18,11 +18,11 @@ export class ActivityController {
     } catch (err) {
       return res
         .status(500)
-        .json({ errMsg: "Error creating activity", error: err });
+        .json({ errMsg: `Error creating new activity`, error: err });
     }
   }
 
-  async getUnique(req: Request, res: Response) {
+  readonly getUnique = async (req: Request, res: Response) => {
     const activityId = req.params.id;
     try {
       const retrievedActivity = await this.activityService.getById(activityId);
@@ -34,7 +34,7 @@ export class ActivityController {
     }
   }
 
-  async getAllActivities(req: Request, res: Response) {
+  readonly getAllActivities = async (req: Request, res: Response) => {
     try {
       const allActivities = await this.activityService.getAll();
       return res.status(200).json(allActivities);
@@ -45,7 +45,7 @@ export class ActivityController {
     }
   }
 
-  async updateActivity(req: Request, res: Response) {
+  readonly updateActivity = async (req: Request, res: Response) => {
     const activityId = req.params.id;
     const newData = req.body;
     try {
@@ -61,7 +61,7 @@ export class ActivityController {
     }
   }
 
-  async deleteActivity(req: Request, res: Response) {
+  readonly deleteActivity = async (req: Request, res: Response) => {
     const activityId = req.params.id;
     try {
       await this.activityService.delete(activityId);
@@ -73,7 +73,7 @@ export class ActivityController {
     }
   }
 
-  async addImageToActivity(req: Request, res: Response) {
+  readonly addImageToActivity = async (req: Request, res: Response) => {
     const activityId = req.params.id;
     const newImage = req.body;
     try {
@@ -86,7 +86,7 @@ export class ActivityController {
     }
   }
 
-  async addItemToActivity(req: Request, res: Response) {
+  readonly addItemToActivity = async (req: Request, res: Response) => {
     const activityId = req.params.id;
     const newItem = req.body;
     try {
@@ -99,7 +99,7 @@ export class ActivityController {
     }
   }
 
-  async addIllnessToActivity(req: Request, res: Response) {
+  readonly addIllnessToActivity = async (req: Request, res: Response) => { 
     const activityId = req.params.id;
     const newIllness = req.body;
     try {

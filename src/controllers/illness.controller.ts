@@ -4,7 +4,7 @@ import { IllnessRepositoryImpl } from "../services/prisma/illness.service";
 export class IllnessController {
   constructor(private readonly illnessService: IllnessRepositoryImpl) {}
 
-  async createIllness(req: Request, res: Response) {
+  readonly createIllness = async (req: Request, res: Response) => {
     const { name, description, symptoms, levelOfAttention } = req.body;
     try {
       const newIllness = await this.illnessService.create({
@@ -19,7 +19,7 @@ export class IllnessController {
     }
   }
 
-  async getUnique(req: Request, res: Response) {
+  readonly getUnique = async (req: Request, res: Response) => {
     const illnessId = req.params.id;
     try {
       const retrievedIllness = await this.illnessService.getById(illnessId);
@@ -31,16 +31,16 @@ export class IllnessController {
     }
   }
 
-  async getAllIllnesses(req: Request, res: Response) {
+  readonly getAllIllnesses = async (req: Request, res: Response) => {
     try {
       const allIllnesses = await this.illnessService.getAll();
       return res.status(201).json(allIllnesses);
     } catch (err) {
-      return res.status(500).json({ errMsg: `Error getting all illnesses` });
+      return res.status(500).json({ errMsg: `Error getting all illnesses`, error: err });
     }
   }
 
-  async updateIllness(req: Request, res: Response) {
+  readonly updateIllness = async (req: Request, res: Response) => {
     const illnessId = req.params.id;
     const newData = req.body;
     try {
@@ -56,7 +56,7 @@ export class IllnessController {
     }
   }
 
-  async deleteIllness(req: Request, res: Response) {
+  readonly deleteIllness = async (req: Request, res: Response) => {
     const illnessId = req.params.id;
     try {
       await this.illnessService.delete(illnessId);
@@ -68,7 +68,7 @@ export class IllnessController {
     }
   }
 
-  async addActivityToIllness(req: Request, res: Response) {
+  readonly addActivityToIllness = async (req: Request, res: Response) => {
     const illnessId = req.params.id;
     const activityId = req.body.activityId;
     try {
