@@ -10,7 +10,7 @@ illnessRouter.post("/create", illnessController.createIllness);
 
 illnessRouter.get("/all", illnessController.getAllIllnesses);
 
-illnessRouter.get("/:id", illnessController.getUnique);
+illnessRouter.get("/:id/get", illnessController.getUnique);
 
 illnessRouter.put("/:id/update", illnessController.updateIllness);
 

@@ -10,7 +10,7 @@ activitiesRouter.post('/create', activitiesController.createActivity);
 
 activitiesRouter.get('/all', activitiesController.getAllActivities);
 
-activitiesRouter.get('/:id', activitiesController.getUnique);
+activitiesRouter.get('/:id/get', activitiesController.getUnique);
 
 activitiesRouter.put('/:id/update', activitiesController.updateActivity);
 

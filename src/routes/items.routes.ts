@@ -10,7 +10,7 @@ itemsRouter.post("/create", itemsController.createItem);
 
 itemsRouter.get("/all", itemsController.getAllItems);
 
-itemsRouter.get("/:id", itemsController.getUnique);
+itemsRouter.get("/:id/get", itemsController.getUnique);
 
 itemsRouter.put("/:id/update", itemsController.updateItem);
 
