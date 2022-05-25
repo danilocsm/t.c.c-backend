@@ -18,7 +18,8 @@
     "test": "jest",
     "dev": "ts-node-dev src/server.ts",
     "build": "npx tsc",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "debug": "ts-node-dev src/server.ts"
   },
   "keywords": [],
   "author": "",
