@@ -29,6 +29,7 @@ model Activity {
   illnessesId String[]   @db.ObjectId
   illnesses   Illness[]  @relation(fields: [illnessesId], references: [id])
   difficulty  Difficulty
+  images      String[]
 
   @@map("activities")
 }
