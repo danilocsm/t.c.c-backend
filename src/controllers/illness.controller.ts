@@ -17,7 +17,7 @@ export class IllnessController {
     } catch (err) {
       return res.status(500).json({ errMsg: `Error creating new illness` });
     }
-  }
+  };
 
   readonly getUnique = async (req: Request, res: Response) => {
     const illnessId = req.params.id;
@@ -29,16 +29,18 @@ export class IllnessController {
         .status(500)
         .json({ errMsg: `Error retrieving illness ${illnessId}` });
     }
-  }
+  };
 
   readonly getAllIllnesses = async (req: Request, res: Response) => {
     try {
       const allIllnesses = await this.illnessService.getAll();
       return res.status(201).json(allIllnesses);
     } catch (err) {
-      return res.status(500).json({ errMsg: `Error getting all illnesses`, error: err });
+      return res
+        .status(500)
+        .json({ errMsg: `Error getting all illnesses`, error: err });
     }
-  }
+  };
 
   readonly updateIllness = async (req: Request, res: Response) => {
     const illnessId = req.params.id;
@@ -54,7 +56,7 @@ export class IllnessController {
         .status(500)
         .json({ errMsg: `Error updating illness ${illnessId}` });
     }
-  }
+  };
 
   readonly deleteIllness = async (req: Request, res: Response) => {
     const illnessId = req.params.id;
@@ -66,11 +68,11 @@ export class IllnessController {
         .status(500)
         .json({ errMsg: `Error deleting illness ${illnessId}` });
     }
-  }
+  };
 
   readonly addActivityToIllness = async (req: Request, res: Response) => {
     const illnessId = req.params.id;
-    const activityId = req.body.activityId;
+    const { activityId } = req.body.activityId;
     try {
       await this.illnessService.addActivity(illnessId, activityId);
       return res.status(201).json({});
@@ -79,5 +81,5 @@ export class IllnessController {
         .status(500)
         .json({ errMsg: `Error adding activity to illness ${illnessId}` });
     }
-  }
+  };
 }

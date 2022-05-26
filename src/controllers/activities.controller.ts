@@ -20,7 +20,7 @@ export class ActivityController {
         .status(500)
         .json({ errMsg: `Error creating new activity`, error: err });
     }
-  }
+  };
 
   readonly getUnique = async (req: Request, res: Response) => {
     const activityId = req.params.id;
@@ -32,7 +32,7 @@ export class ActivityController {
         .status(500)
         .json({ errMsg: `Error getting activity ${activityId}`, error: err });
     }
-  }
+  };
 
   readonly getAllActivities = async (req: Request, res: Response) => {
     try {
@@ -43,7 +43,7 @@ export class ActivityController {
         .status(500)
         .json({ errMsg: `Error getting all activities`, error: err });
     }
-  }
+  };
 
   readonly updateActivity = async (req: Request, res: Response) => {
     const activityId = req.params.id;
@@ -59,7 +59,7 @@ export class ActivityController {
         .status(500)
         .json({ errMsg: `Error updating activity ${activityId}`, error: err });
     }
-  }
+  };
 
   readonly deleteActivity = async (req: Request, res: Response) => {
     const activityId = req.params.id;
@@ -71,11 +71,11 @@ export class ActivityController {
         .status(500)
         .json({ errMsg: `Error deleting activity ${activityId}`, error: err });
     }
-  }
+  };
 
   readonly addImageToActivity = async (req: Request, res: Response) => {
     const activityId = req.params.id;
-    const newImage = req.body;
+    const { newImage } = req.body;
     try {
       await this.activityService.addImage(activityId, newImage);
       return res.status(200).json({});
@@ -84,29 +84,31 @@ export class ActivityController {
         .status(500)
         .json({ errMsg: `Error adding image ${newImage}`, error: err });
     }
-  }
+  };
 
   readonly addItemToActivity = async (req: Request, res: Response) => {
     const activityId = req.params.id;
-    const newItem = req.body;
+    const { itemId } = req.body;
     try {
-      await this.activityService.addItem(activityId, newItem);
+      await this.activityService.addItem(activityId, itemId);
       return res.status(200).json({});
     } catch (err) {
       return res
         .status(500)
-        .json({ errMsg: `Error adding item ${newItem}`, error: err });
+        .json({ errMsg: `Error adding item ${itemId}`, error: err });
     }
-  }
+  };
 
-  readonly addIllnessToActivity = async (req: Request, res: Response) => { 
+  readonly addIllnessToActivity = async (req: Request, res: Response) => {
     const activityId = req.params.id;
-    const newIllness = req.body;
+    const { illnessId } = req.body;
     try {
-        await this.activityService.addIllness(activityId, newIllness);
-        return res.status(200).json({});
+      await this.activityService.addIllness(activityId, illnessId);
+      return res.status(200).json({});
     } catch (err) {
-        return res.status(500).json( { errMsg: `Error adding illness ${activityId}`, error: err});
+      return res
+        .status(500)
+        .json({ errMsg: `Error adding illness ${activityId}`, error: err });
     }
-  }
+  };
 }

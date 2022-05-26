@@ -20,7 +20,7 @@ export class ItemsController {
         .status(500)
         .json({ errMsg: `Error creating new item`, error: err });
     }
-  }
+  };
 
   readonly getUnique = async (req: Request, res: Response) => {
     const itemId = req.params.id;
@@ -32,7 +32,7 @@ export class ItemsController {
         .status(500)
         .json({ errMsg: `Error retrieving item ${itemId}`, error: err });
     }
-  }
+  };
 
   readonly getAllItems = async (req: Request, res: Response) => {
     try {
@@ -43,7 +43,7 @@ export class ItemsController {
         .status(500)
         .json({ errMsg: `Error getting all items`, error: err });
     }
-  }
+  };
 
   readonly updateItem = async (req: Request, res: Response) => {
     const itemId = req.params.id;
@@ -56,7 +56,7 @@ export class ItemsController {
         .status(500)
         .json({ errMsg: `Error updating item ${itemId}`, error: err });
     }
-  }
+  };
 
   readonly deleteItem = async (req: Request, res: Response) => {
     const itemId = req.params.id;
@@ -68,11 +68,11 @@ export class ItemsController {
         .status(500)
         .json({ errMsg: `Error deleting item ${itemId}`, error: err });
     }
-  }
+  };
 
   readonly addActivityToItem = async (req: Request, res: Response) => {
     const itemId = req.params.id;
-    const activityId = req.body.activityId;
+    const { activityId } = req.body.activityId;
     try {
       await this.itemsService.addActivity(itemId, activityId);
       return res.status(201).json({});
@@ -81,5 +81,5 @@ export class ItemsController {
         .status(500)
         .json({ errMsg: `Error adding activity to ${itemId}` });
     }
-  }
+  };
 }

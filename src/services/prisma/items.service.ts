@@ -25,12 +25,12 @@ export class ItemsRepositoryImpl implements ItemsRepository {
     await prisma.item.delete({ where: { id: id } });
   }
 
-  async getAll(): Promise<Item[]>{
+  async getAll(): Promise<Item[]> {
     const allItems = await prisma.item.findMany();
     return allItems;
   }
 
-  async getById(id: string): Promise<Item|null> {
+  async getById(id: string): Promise<Item | null> {
     const recoveredItem = await prisma.item.findUnique({ where: { id: id } });
     return recoveredItem;
   }
@@ -51,6 +51,5 @@ export class ItemsRepositoryImpl implements ItemsRepository {
       data: { activitiesId: targetItem.activitiesId },
       where: { id: itemId },
     });
-
   }
 }
