@@ -1,8 +1,29 @@
-import { Request, Response } from "express";
+import express, { Request, Response } from "express";
+import Controller from "../interfaces/controller.interface";
 import { ItemsRepositoryImpl } from "../services/prisma/items.service";
 
-export class ItemsController {
-  constructor(private readonly itemsService: ItemsRepositoryImpl) {}
+export class ItemsController implements Controller {
+  public readonly path = "/items";
+  public readonly router = express.Router();
+  private readonly itemsService: ItemsRepositoryImpl;
+  constructor() {
+    this.itemsService = new ItemsRepositoryImpl();
+    this.initializeRoutes();
+  }
+
+  initializeRoutes() {
+    this.router.post("/create", this.createItem);
+
+    this.router.get("/all", this.getAllItems);
+
+    this.router.get("/:id/get", this.getUnique);
+
+    this.router.put("/:id/update", this.updateItem);
+
+    this.router.delete("/:id/delete", this.deleteItem);
+
+    this.router.patch("/:id/addActivity", this.addActivityToItem);
+  }
 
   readonly createItem = async (req: Request, res: Response) => {
     const { name, price, link, itemType } = req.body;

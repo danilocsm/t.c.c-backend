@@ -1,8 +1,34 @@
-import { Request, Response } from "express";
+import express, { Request, Response } from "express";
 import { ActivityRepositoryImpl } from "../services/prisma/activities.service";
+import Controller from "../interfaces/controller.interface";
 
-export class ActivityController {
-  constructor(private activityService: ActivityRepositoryImpl) {}
+export class ActivityController implements Controller {
+  public readonly path = "/activities";
+  public readonly router = express.Router();
+  private readonly activityService: ActivityRepositoryImpl;
+
+  constructor() {
+    this.activityService = new ActivityRepositoryImpl();
+    this.initializeRoutes();
+  }
+
+  initializeRoutes() {
+    this.router.post("/create", this.createActivity);
+
+    this.router.get("/all", this.getAllActivities);
+
+    this.router.get("/:id/get", this.getUnique);
+
+    this.router.put("/:id/update", this.updateActivity);
+
+    this.router.patch("/:id/addItem", this.addItemToActivity);
+
+    this.router.patch("/:id/addIllness", this.addIllnessToActivity);
+
+    this.router.patch("/:id/addImage", this.addImageToActivity);
+
+    this.router.delete("/:id/delete", this.deleteActivity);
+  }
 
   readonly createActivity = async (req: Request, res: Response) => {
     const { description, difficulty, itemsId, illnessesId, images } = req.body;

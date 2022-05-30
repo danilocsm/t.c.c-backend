@@ -1,8 +1,23 @@
-import { Request, Response } from "express";
+import express, { Request, Response } from "express";
+import Controller from "../interfaces/controller.interface";
 import { TestimonialRepositoryImpl } from "../services/prisma/testimonial.service";
 
-export class TestimonialController {
-  constructor(private readonly testimonialService: TestimonialRepositoryImpl) {}
+export class TestimonialController implements Controller {
+  public readonly path = "/testimonials";
+  public readonly router = express.Router();
+  private readonly testimonialService: TestimonialRepositoryImpl;
+  constructor() {
+    this.testimonialService = new TestimonialRepositoryImpl();
+    this.initializeRoutes();
+  }
+
+  initializeRoutes() {
+    this.router.post("/create", this.createTestimonial);
+
+    this.router.get("/all", this.getAllTestimonials);
+
+    this.router.delete("/:id/delete", this.deleteTestimonial);
+  }
 
   readonly createTestimonial = async (req: Request, res: Response) => {
     const { text, author } = req.body;
