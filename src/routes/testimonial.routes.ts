@@ -11,6 +11,3 @@ testimonialRouter.post('/create', testimonialController.createTestimonial);
 testimonialRouter.get('/all', testimonialController.getAllTestimonials);
 
 testimonialRouter.delete('/:id/delete', testimonialController.deleteTestimonial);
-
-testimonialRouter.get('/all/:id', testimonialController.getAllTestimonialsByUser);
-
