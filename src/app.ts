@@ -4,11 +4,11 @@ import Controller from "./interfaces/controller.interface";
 
 export default class App {
   public app: express.Application;
-  public appPort: number;
+  public appPort;
 
   constructor(controllers: Controller[], port: number) {
     this.app = express();
-    this.appPort = port;
+    this.appPort = process.env.PORT || port;
 
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
@@ -26,8 +26,8 @@ export default class App {
   }
 
   public listen() {
-    this.app.listen(process.env.PORT || this.appPort, () => {
-      console.log("Server listening on port " + process.env.PORT || this.appPort);
+    this.app.listen(this.appPort, () => {
+      console.log("Server listening on port " + this.appPort);
     });
   }
 }
