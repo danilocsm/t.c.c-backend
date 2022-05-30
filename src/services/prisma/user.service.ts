@@ -15,15 +15,24 @@ export class UserRepositoryImpl implements UserRepository {
   }
 
   async update(id: string, newData: UserCreateData): Promise<User> {
-    throw new Error("Method not implemented.");
+    const userUpdated = await prisma.user.update({
+      data: newData,
+      where: { id: id },
+    });
+    return userUpdated;
   }
-  delete(id: string): Promise<void> {
-    throw new Error("Method not implemented.");
+
+  async delete(id: string): Promise<void> {
+    await prisma.user.delete({ where: { id: id } });
   }
-  getById(id: string): Promise<User> {
-    throw new Error("Method not implemented.");
+
+  async getById(id: string): Promise<User | null> {
+    const userRetrieved = await prisma.user.findUnique({ where: { id: id } });
+    return userRetrieved;
   }
-  getAll(): Promise<User[]> {
-    throw new Error("Method not implemented.");
+
+  async getAll(): Promise<User[]> {
+    const allUsers = await prisma.user.findMany();
+    return allUsers;
   }
 }

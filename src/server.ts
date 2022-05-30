@@ -14,7 +14,7 @@ app.use("/items", itemsRouter);
 app.use("/illnesses", illnessRouter);
 app.use("/activities", activitiesRouter);
 app.use('/testimonials', testimonialRouter);
-// app.use('/users', userRouter);
+app.use('/users', userRouter);
 
 app.listen(process.env.PORT || 3333, () => {
   console.log("Server running on port 3333");

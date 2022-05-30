@@ -11,6 +11,6 @@ export interface UserRepository {
     create(user: UserCreateData): Promise<User>;
     update(id: string, newData: UserCreateData): Promise<User>;
     delete(id: string): Promise<void>;
-    getById(id: string): Promise<User>;
+    getById(id: string): Promise<User|null>;
     getAll(): Promise<User[]>;
 }
