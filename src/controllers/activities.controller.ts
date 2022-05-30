@@ -1,6 +1,8 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import { ActivityRepositoryImpl } from "../services/prisma/activities.service";
 import Controller from "../interfaces/controller.interface";
+import HttpException from "../errors/httpexcepction.error";
+import { Activity } from "@prisma/client";
 
 export class ActivityController implements Controller {
   public readonly path = "/activities";
@@ -30,7 +32,7 @@ export class ActivityController implements Controller {
     this.router.delete("/:id/delete", this.deleteActivity);
   }
 
-  readonly createActivity = async (req: Request, res: Response) => {
+  private readonly createActivity = async (req: Request, res: Response) => {
     const { description, difficulty, itemsId, illnessesId, images } = req.body;
     try {
       const activityCreated = await this.activityService.create({
@@ -48,54 +50,74 @@ export class ActivityController implements Controller {
     }
   };
 
-  readonly getUnique = async (req: Request, res: Response) => {
+  private readonly getUnique = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const activityId = req.params.id;
+    let retrievedActivity = null;
     try {
-      const retrievedActivity = await this.activityService.getById(activityId);
+      retrievedActivity = await this.activityService.getById(activityId);
+    } catch (error) {
+      return next(new HttpException(500, "Internal Server Error"));
+    } finally {
+      if (retrievedActivity == null) {
+        return next(
+          new HttpException(404, `error getting activity ${activityId}`)
+        );
+      }
       return res.status(200).json(retrievedActivity);
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ errMsg: `Error getting activity ${activityId}`, error: err });
     }
   };
 
-  readonly getAllActivities = async (req: Request, res: Response) => {
+  readonly getAllActivities = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    let allActivities: Activity[] = [];
     try {
-      const allActivities = await this.activityService.getAll();
-      return res.status(200).json(allActivities);
+      allActivities = await this.activityService.getAll();
     } catch (err) {
       return res
         .status(500)
         .json({ errMsg: `Error getting all activities`, error: err });
+    } finally {
+      if (allActivities.length === 0) {
+        return next(new HttpException(404, "No activities were found"));
+      }
+      return res.status(200).json(allActivities);
     }
   };
 
-  readonly updateActivity = async (req: Request, res: Response) => {
+  readonly updateActivity = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const activityId = req.params.id;
     const newData = req.body;
+    let updatedActivity;
     try {
-      const updatedActivity = await this.activityService.update(
-        activityId,
-        newData
-      );
+      updatedActivity = await this.activityService.update(activityId, newData);
       return res.status(200).json(updatedActivity);
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ errMsg: `Error updating activity ${activityId}`, error: err });
+    } catch (RecordNotFound) {
+      return next(new HttpException(404, `couldn't update ${activityId}`));
     }
   };
 
-  readonly deleteActivity = async (req: Request, res: Response) => {
+  readonly deleteActivity = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const activityId = req.params.id;
     try {
       await this.activityService.delete(activityId);
       return res.status(200).json({});
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ errMsg: `Error deleting activity ${activityId}`, error: err });
+    } catch (RecordNotFound) {
+      return next(new HttpException(404, `couldn't delete ${activityId}`));
     }
   };
 

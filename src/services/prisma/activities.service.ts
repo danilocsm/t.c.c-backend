@@ -39,6 +39,7 @@ export class ActivityRepositoryImpl implements ActivityRepository {
   async getById(id: string): Promise<Activity | null> {
     const targetActivity = await prisma.activity.findUnique({
       where: { id: id },
+      rejectOnNotFound: true
     });
     return targetActivity;
   }
