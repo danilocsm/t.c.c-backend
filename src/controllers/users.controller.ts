@@ -1,8 +1,27 @@
-import { Request, Response } from "express";
+import express, { Request, Response } from "express";
+import Controller from "../interfaces/controller.interface";
 import { UserRepositoryImpl } from "../services/prisma/user.service";
 
-export class UserController {
-  constructor(private readonly userService: UserRepositoryImpl) {}
+export class UserController implements Controller {
+  public readonly path = "/users";
+  public readonly router = express.Router();
+  private readonly userService: UserRepositoryImpl;
+  constructor() {
+    this.userService = new UserRepositoryImpl();
+    this.initializeRoutes();
+  }
+
+  initializeRoutes() {
+    this.router.post('/create', this.createUser);
+
+    this.router.get('/all', this.getAllUsers);
+
+    this.router.get('/:id/get', this.getUniqueUser);
+
+    this.router.put('/:id/update', this.updateUser);
+
+    this.router.delete('/:id/delete', this.deleteUser); 
+  }
 
   readonly createUser = async (req: Request, res: Response) => {
     const { username, email, password, picture } = req.body;

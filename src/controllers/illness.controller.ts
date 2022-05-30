@@ -1,8 +1,29 @@
-import { Request, Response } from "express";
+import express, { Request, Response } from "express";
+import Controller from "../interfaces/controller.interface";
 import { IllnessRepositoryImpl } from "../services/prisma/illness.service";
 
-export class IllnessController {
-  constructor(private readonly illnessService: IllnessRepositoryImpl) {}
+export class IllnessController implements Controller {
+  public readonly path = "/illnesses";
+  public readonly router = express.Router();
+  private readonly illnessService: IllnessRepositoryImpl;
+  constructor() {
+    this.illnessService = new IllnessRepositoryImpl();
+    this.initializeRoutes();
+  }
+
+  initializeRoutes() {
+    this.router.post("/create", this.createIllness);
+
+    this.router.get("/all", this.getAllIllnesses);
+
+    this.router.get("/:id/get", this.getUnique);
+
+    this.router.put("/:id/update", this.updateIllness);
+
+    this.router.delete("/:id/delete", this.deleteIllness);
+
+    this.router.patch("/:id/addActivity", this.addActivityToIllness);
+  }
 
   readonly createIllness = async (req: Request, res: Response) => {
     const { name, description, symptoms, levelOfAttention } = req.body;
