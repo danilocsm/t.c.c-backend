@@ -5,11 +5,11 @@ export class TestimonialController {
   constructor(private readonly testimonialService: TestimonialRepositoryImpl) {}
 
   readonly createTestimonial = async (req: Request, res: Response) => {
-    const { text, user } = req.body;
+    const { text, author } = req.body;
     try {
       const createdTestimonial = await this.testimonialService.create({
         text,
-        user,
+        author,
       });
       return res.status(201).json(createdTestimonial);
     } catch (err) {
@@ -39,23 +39,6 @@ export class TestimonialController {
       return res
         .status(500)
         .json({ errMsg: `Error getting all testimonials`, error: err });
-    }
-  };
-
-  readonly getAllTestimonialsByUser = async (req: Request, res: Response) => {
-    const { userId } = req.body;
-    try {
-      const allTestimonials = await this.testimonialService.getAllByUser(
-        userId
-      );
-      return res.status(200).json(allTestimonials);
-    } catch (err) {
-      return res
-        .status(500)
-        .json({
-          errMsg: `Error getting testimonials from user ${userId}`,
-          error: err,
-        });
     }
   };
 }

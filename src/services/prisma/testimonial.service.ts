@@ -6,9 +6,9 @@ import {
 } from "../../repositories/testimonial.repository";
 
 export class TestimonialRepositoryImpl implements TestimonialRepository {
-  async create({ text, user }: TestimonialCreateData): Promise<Testimonial> {
+  async create({ text, author }: TestimonialCreateData): Promise<Testimonial> {
     const newTestimonial = await prisma.testimonial.create({
-      data: { text: text, userId: user },
+      data: { text: text, author: author },
     });
     return newTestimonial;
   }
@@ -20,12 +20,5 @@ export class TestimonialRepositoryImpl implements TestimonialRepository {
   async getAll(): Promise<Testimonial[]> {
     const allTestimonials = await prisma.testimonial.findMany();
     return allTestimonials;
-  }
-
-  async getAllByUser(userId: string): Promise<Testimonial[]> {
-    const allUserTestimonials = await prisma.testimonial.findMany({
-      where: { userId: userId },
-    });
-    return allUserTestimonials;
   }
 }
