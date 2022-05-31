@@ -12,15 +12,15 @@ export class UserController implements Controller {
   }
 
   initializeRoutes() {
-    this.router.post('/create', this.createUser);
+    this.router.post("/create", this.createUser);
 
-    this.router.get('/all', this.getAllUsers);
+    this.router.get("/all", this.getAllUsers);
 
-    this.router.get('/:id/get', this.getUniqueUser);
+    this.router.get("/:id/get", this.getUniqueUser);
 
-    this.router.put('/:id/update', this.updateUser);
+    this.router.put("/:id/update", this.updateUser);
 
-    this.router.delete('/:id/delete', this.deleteUser); 
+    this.router.delete("/:id/delete", this.deleteUser);
   }
 
   readonly createUser = async (req: Request, res: Response) => {

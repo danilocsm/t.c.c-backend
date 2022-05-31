@@ -1,6 +1,7 @@
 import { Activity, Difficulty } from "@prisma/client";
 
 export interface ActivityCreateData {
+  name: string;
   description: string;
   difficulty: Difficulty;
   itemsId?: string[];
@@ -13,7 +14,7 @@ export interface ActivityRepository {
   update(id: string, newData: ActivityCreateData): Promise<Activity>;
   delete(id: string): Promise<void>;
   getAll(): Promise<Activity[]>;
-  getById(id: string): Promise<Activity | null>;
+  getById(id: string): Promise<Activity>;
   addItem(id: string, itemId: string): Promise<void>;
   addIllness(id: string, illnessId: string): Promise<void>;
   addImage(id: string, image: string): Promise<void>;
