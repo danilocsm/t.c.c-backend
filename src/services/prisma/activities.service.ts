@@ -1,4 +1,8 @@
 import { Activity } from "@prisma/client";
+import {
+  ActivityAlreadyExistsError,
+  ActivityNotFoundError,
+} from "../../errors/activity.error";
 import { prisma } from "../../prisma";
 import {
   ActivityCreateData,
@@ -7,27 +11,46 @@ import {
 
 export class ActivityRepositoryImpl implements ActivityRepository {
   async create({
+    name,
     description,
     difficulty,
     itemsId,
     illnessesId,
     images,
   }: ActivityCreateData): Promise<Activity> {
+    const activity = await prisma.activity.findUnique({
+      where: { name: name },
+    });
+
+    if (activity != null) throw new ActivityAlreadyExistsError(activity.id);
+
     const newActivity = await prisma.activity.create({
-      data: { description, difficulty, itemsId, illnessesId, images },
+      data: { name, description, difficulty, itemsId, illnessesId, images },
     });
     return newActivity;
   }
 
   async update(id: string, newData: ActivityCreateData): Promise<Activity> {
-    const updatedItem = await prisma.activity.update({
+    const activityExists = await prisma.activity.findUnique({
+      where: { id: id },
+    });
+
+    if (activityExists == null) throw new ActivityNotFoundError(id);
+
+    const updatedActivity = await prisma.activity.update({
       data: newData,
       where: { id: id },
     });
-    return updatedItem;
+    return updatedActivity;
   }
 
   async delete(id: string): Promise<void> {
+    const activityExists = await prisma.activity.findUnique({
+      where: { id: id },
+    });
+
+    if (activityExists == null) throw new ActivityNotFoundError(id);
+
     await prisma.activity.delete({ where: { id: id } });
   }
 
@@ -36,10 +59,13 @@ export class ActivityRepositoryImpl implements ActivityRepository {
     return allActivities;
   }
 
-  async getById(id: string): Promise<Activity | null> {
+  async getById(id: string): Promise<Activity> {
     const targetActivity = await prisma.activity.findUnique({
       where: { id: id },
     });
+
+    if (targetActivity == null) throw new ActivityNotFoundError(id);
+
     return targetActivity;
   }
 
@@ -51,8 +77,8 @@ export class ActivityRepositoryImpl implements ActivityRepository {
       where: { id: id },
     });
 
-    if (targetItem == null) throw new Error();
-    if (targetActivity == null) throw new Error();
+    if (targetItem == null) throw new Error(); // updated this to a custom error
+    if (targetActivity == null) throw new ActivityNotFoundError(id);
 
     targetActivity.itemsId.push(itemId);
     await prisma.activity.update({
@@ -64,13 +90,15 @@ export class ActivityRepositoryImpl implements ActivityRepository {
   async addIllness(id: string, illnessId: string): Promise<void> {
     const targetIllness = await prisma.illness.findUnique({
       where: { id: illnessId },
+      rejectOnNotFound: true,
     });
     const targetActivity = await prisma.activity.findUnique({
       where: { id: id },
+      rejectOnNotFound: true,
     });
 
-    if (targetIllness == null) throw new Error();
-    if (targetActivity == null) throw new Error();
+    if (targetIllness == null) throw new Error(); // updated this to a custom error
+    if (targetActivity == null) throw new ActivityNotFoundError(id);
 
     targetActivity.illnessesId.push(illnessId);
     await prisma.activity.update({
@@ -82,9 +110,10 @@ export class ActivityRepositoryImpl implements ActivityRepository {
   async addImage(id: string, image: string): Promise<void> {
     const targetActivity = await prisma.activity.findUnique({
       where: { id: id },
+      rejectOnNotFound: true,
     });
 
-    if (targetActivity == null) throw new Error();
+    if (targetActivity == null) throw new ActivityNotFoundError(id);
 
     targetActivity.images.push(image);
     await prisma.activity.update({

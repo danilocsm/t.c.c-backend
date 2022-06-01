@@ -1,4 +1,4 @@
-import { Role, Testimonial, User } from "@prisma/client";
+import { User } from "@prisma/client";
 
 export interface UserCreateData {
   username: string;
@@ -8,9 +8,9 @@ export interface UserCreateData {
 }
 
 export interface UserRepository {
-    create(user: UserCreateData): Promise<User>;
-    update(id: string, newData: UserCreateData): Promise<User>;
-    delete(id: string): Promise<void>;
-    getById(id: string): Promise<User|null>;
-    getAll(): Promise<User[]>;
+  create(user: UserCreateData): Promise<User>;
+  update(id: string, newData: UserCreateData): Promise<User>;
+  delete(id: string): Promise<void>;
+  getById(id: string): Promise<User | null>;
+  getAll(): Promise<User[]>;
 }

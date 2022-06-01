@@ -1,6 +1,7 @@
 import cors from "cors";
 import express from "express";
 import Controller from "./interfaces/controller.interface";
+import errorMiddleware from "./middlewares/error.middleware";
 
 export default class App {
   public app: express.Application;
@@ -17,6 +18,7 @@ export default class App {
   private initializeMiddlewares() {
     this.app.use(cors());
     this.app.use(express.json({ limit: "50mb" }));
+    this.app.use(errorMiddleware);
   }
 
   private initializeControllers(controllers: Controller[]) {

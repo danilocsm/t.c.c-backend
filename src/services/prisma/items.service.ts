@@ -38,13 +38,12 @@ export class ItemsRepositoryImpl implements ItemsRepository {
   async addActivity(itemId: string, activityId: string): Promise<void> {
     const targetItem = await prisma.item.findUnique({
       where: { id: itemId },
+      rejectOnNotFound: true,
     });
     const targetActivity = await prisma.activity.findUnique({
       where: { id: activityId },
+      rejectOnNotFound: true,
     });
-
-    if (targetItem == null) throw new Error();
-    if (targetActivity == null) throw new Error();
 
     targetItem.activitiesId.push(activityId);
     await prisma.illness.update({

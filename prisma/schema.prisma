@@ -24,6 +24,7 @@ model User {
 
 model Activity {
   id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  name        String     @unique
   description String
   itemsId     String[]   @db.ObjectId
   items       Item[]     @relation(fields: [itemsId], references: [id])
@@ -37,7 +38,7 @@ model Activity {
 
 model Item {
   id           String     @id @default(auto()) @map("_id") @db.ObjectId
-  name         String
+  name         String     @unique
   price        Float
   link         String?
   itemType     ItemType
@@ -49,7 +50,7 @@ model Item {
 
 model Illness {
   id               String           @id @default(auto()) @map("_id") @db.ObjectId
-  name             String
+  name             String           @unique
   description      String
   symptoms         String[]
   levelOfAttention LevelOfAttention
