@@ -3,6 +3,7 @@ import {
   ActivityAlreadyExistsError,
   ActivityNotFoundError,
 } from "../../errors/activity.error";
+import { IllnessNotFoundError } from "../../errors/illness.error";
 import { prisma } from "../../prisma";
 import {
   ActivityCreateData,
@@ -97,7 +98,7 @@ export class ActivityRepositoryImpl implements ActivityRepository {
       rejectOnNotFound: true,
     });
 
-    if (targetIllness == null) throw new Error(); // updated this to a custom error
+    if (targetIllness == null) throw new IllnessNotFoundError(id); // updated this to a custom error
     if (targetActivity == null) throw new ActivityNotFoundError(id);
 
     targetActivity.illnessesId.push(illnessId);

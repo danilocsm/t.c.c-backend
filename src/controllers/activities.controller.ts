@@ -32,7 +32,7 @@ export class ActivityController implements Controller {
     this.router.delete("/:id/delete", this.deleteActivity);
   }
 
-  private readonly createActivity = async (
+  private createActivity = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -54,7 +54,7 @@ export class ActivityController implements Controller {
     }
   };
 
-  private readonly getUnique = async (
+  private getUnique = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -69,7 +69,7 @@ export class ActivityController implements Controller {
     }
   };
 
-  readonly getAllActivities = async (
+  private getAllActivities = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -83,7 +83,7 @@ export class ActivityController implements Controller {
     }
   };
 
-  readonly updateActivity = async (
+  private updateActivity = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -99,7 +99,7 @@ export class ActivityController implements Controller {
     }
   };
 
-  readonly deleteActivity = async (
+  private deleteActivity = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -113,7 +113,7 @@ export class ActivityController implements Controller {
     }
   };
 
-  readonly addImageToActivity = async (
+  private addImageToActivity = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -128,7 +128,7 @@ export class ActivityController implements Controller {
     }
   };
 
-  readonly addItemToActivity = async (
+  private addItemToActivity = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -143,7 +143,7 @@ export class ActivityController implements Controller {
     }
   };
 
-  readonly addIllnessToActivity = async (
+  private addIllnessToActivity = async (
     req: Request,
     res: Response,
     next: NextFunction
