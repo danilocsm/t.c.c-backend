@@ -16,13 +16,13 @@ export class ItemsController implements Controller {
 
     this.router.get("/all", this.getAllItems);
 
-    this.router.get("/:id/get", this.getUnique);
+    this.router.get("/:id", this.getUnique);
 
-    this.router.put("/:id/update", this.updateItem);
+    this.router.put("/:id", this.updateItem);
 
-    this.router.delete("/:id/delete", this.deleteItem);
+    this.router.delete("/:id", this.deleteItem);
 
-    this.router.patch("/:id/addActivity", this.addActivityToItem);
+    this.router.patch("/:id/newActivity", this.addActivityToItem);
   }
 
   private createItem = async (

@@ -18,17 +18,17 @@ export class ActivityController implements Controller {
 
     this.router.get("/all", this.getAllActivities);
 
-    this.router.get("/:id/get", this.getUnique);
+    this.router.get("/:id", this.getUnique);
 
-    this.router.put("/:id/update", this.updateActivity);
+    this.router.put("/:id", this.updateActivity);
 
-    this.router.patch("/:id/addItem", this.addItemToActivity);
+    this.router.patch("/:id/newItem", this.addItemToActivity);
 
-    this.router.patch("/:id/addIllness", this.addIllnessToActivity);
+    this.router.patch("/:id/newIllness", this.addIllnessToActivity);
 
-    this.router.patch("/:id/addImage", this.addImageToActivity);
+    this.router.patch("/:id/newImage", this.addImageToActivity);
 
-    this.router.delete("/:id/delete", this.deleteActivity);
+    this.router.delete("/:id", this.deleteActivity);
   }
 
   private createActivity = async (

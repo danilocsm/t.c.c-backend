@@ -15,7 +15,7 @@ export class UserAlreadyExists extends Error implements GenericError {
   message: string;
   constructor(userName: string) {
     super();
-    this.status = 404;
+    this.status = 400;
     this.message = `User ${userName} already exists`;
   }
 }

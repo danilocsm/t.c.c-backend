@@ -16,13 +16,13 @@ export class IllnessController implements Controller {
 
     this.router.get("/all", this.getAllIllnesses);
 
-    this.router.get("/:id/get", this.getUnique);
+    this.router.get("/:id", this.getUnique);
 
-    this.router.put("/:id/update", this.updateIllness);
+    this.router.put("/:id", this.updateIllness);
 
-    this.router.delete("/:id/delete", this.deleteIllness);
+    this.router.delete("/:id", this.deleteIllness);
 
-    this.router.patch("/:id/addActivity", this.addActivityToIllness);
+    this.router.patch("/:id/newActivity", this.addActivityToIllness);
   }
 
   private createIllness = async (
