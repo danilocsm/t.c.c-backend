@@ -22,7 +22,7 @@ export class IllnessRepositoryImpl implements IllnessRepository {
     });
 
     if (illnessExists != null)
-      throw new IllnessAlreadyExistsError(illnessExists.id);
+      throw new IllnessAlreadyExistsError(illnessExists.name);
 
     const newItem = await prisma.illness.create({
       data: { name, description, symptoms, levelOfAttention },
@@ -70,15 +70,15 @@ export class IllnessRepositoryImpl implements IllnessRepository {
   }
 
   async addActivity(id: string, activityId: string): Promise<void> {
-    const targetIllness = await prisma.illness.findUnique({
-      where: { id: id },
-    });
     const targetActivity = await prisma.activity.findUnique({
       where: { id: activityId },
     });
+    const targetIllness = await prisma.illness.findUnique({
+      where: { id: id },
+    });
 
+    if (targetActivity == null) throw new ActivityNotFoundError(activityId);
     if (targetIllness == null) throw new IllnessNotFoundError(id);
-    if (targetActivity == null) throw new ActivityNotFoundError(id);
 
     targetIllness.activitiesId.push(activityId);
     await prisma.illness.update({

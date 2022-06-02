@@ -109,7 +109,7 @@ export class IllnessController implements Controller {
     next: NextFunction
   ) => {
     const illnessId = req.params.id;
-    const { activityId } = req.body.activityId;
+    const { activityId } = req.body;
     try {
       await this.illnessService.addActivity(illnessId, activityId);
       return res.status(201).json({});
