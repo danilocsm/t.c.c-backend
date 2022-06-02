@@ -52,7 +52,7 @@ export class IllnessController implements Controller {
     const illnessId = req.params.id;
     try {
       const retrievedIllness = await this.illnessService.getById(illnessId);
-      return res.status(201).json(retrievedIllness);
+      return res.status(200).json(retrievedIllness);
     } catch (error) {
       return next(error);
     }
@@ -65,7 +65,7 @@ export class IllnessController implements Controller {
   ) => {
     try {
       const allIllnesses = await this.illnessService.getAll();
-      return res.status(201).json(allIllnesses);
+      return res.status(200).json(allIllnesses);
     } catch (error) {
       return next(error);
     }
@@ -83,7 +83,7 @@ export class IllnessController implements Controller {
         illnessId,
         newData
       );
-      return res.status(201).json(updatedIllness);
+      return res.status(200).json(updatedIllness);
     } catch (error) {
       return next(error);
     }
@@ -97,7 +97,7 @@ export class IllnessController implements Controller {
     const illnessId = req.params.id;
     try {
       await this.illnessService.delete(illnessId);
-      return res.status(201).json({});
+      return res.status(204).json({});
     } catch (error) {
       return next(error);
     }
@@ -112,7 +112,7 @@ export class IllnessController implements Controller {
     const { activityId } = req.body;
     try {
       await this.illnessService.addActivity(illnessId, activityId);
-      return res.status(201).json({});
+      return res.status(204).json({});
     } catch (error) {
       return next(error);
     }

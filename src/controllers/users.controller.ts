@@ -57,7 +57,7 @@ export class UserController implements Controller {
     const userId = req.params.id;
     try {
       await this.userService.delete(userId);
-      return res.status(200).json({});
+      return res.status(204).json({});
     } catch (err) {
       return res
         .status(500)

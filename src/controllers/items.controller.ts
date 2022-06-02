@@ -46,7 +46,7 @@ export class ItemsController implements Controller {
     const itemId = req.params.id;
     try {
       const itemRetrieved = await this.itemsService.getById(itemId);
-      return res.status(201).json(itemRetrieved);
+      return res.status(200).json(itemRetrieved);
     } catch (err) {
       return res
         .status(500)
@@ -57,7 +57,7 @@ export class ItemsController implements Controller {
   readonly getAllItems = async (req: Request, res: Response) => {
     try {
       const allItems = await this.itemsService.getAll();
-      return res.status(201).json(allItems);
+      return res.status(200).json(allItems);
     } catch (err) {
       return res
         .status(500)
@@ -70,7 +70,7 @@ export class ItemsController implements Controller {
     const newData = req.body;
     try {
       const itemUpdated = await this.itemsService.update(itemId, newData);
-      return res.status(201).json(itemUpdated);
+      return res.status(200).json(itemUpdated);
     } catch (err) {
       return res
         .status(500)
@@ -82,7 +82,7 @@ export class ItemsController implements Controller {
     const itemId = req.params.id;
     try {
       await this.itemsService.delete(itemId);
-      return res.status(201).json({});
+      return res.status(204).json({});
     } catch (err) {
       return res
         .status(500)
@@ -95,7 +95,7 @@ export class ItemsController implements Controller {
     const { activityId } = req.body.activityId;
     try {
       await this.itemsService.addActivity(itemId, activityId);
-      return res.status(201).json({});
+      return res.status(204).json({});
     } catch (err) {
       return res
         .status(500)
