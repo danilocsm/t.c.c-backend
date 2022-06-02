@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import Controller from "../interfaces/controller.interface";
 import { UserRepositoryImpl } from "../services/prisma/user.service";
 
@@ -23,7 +23,11 @@ export class UserController implements Controller {
     this.router.delete("/:id/delete", this.deleteUser);
   }
 
-  readonly createUser = async (req: Request, res: Response) => {
+  private createUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const { username, email, password, picture } = req.body;
     try {
       const newUser = await this.userService.create({
@@ -33,58 +37,64 @@ export class UserController implements Controller {
         picture,
       });
       return res.status(201).json(newUser);
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ errMsg: `Error creating user`, error: err });
+    } catch (error) {
+      return next(error);
     }
   };
 
-  readonly updateUser = async (req: Request, res: Response) => {
+  private updateUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const userId = req.params.id;
     const newData = req.body;
     try {
       const userUpdated = await this.userService.update(userId, newData);
       return res.status(200).json(userUpdated);
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ errMsg: `Error updating user ${userId}`, error: err });
+    } catch (error) {
+      return next(error);
     }
   };
 
-  readonly deleteUser = async (req: Request, res: Response) => {
+  private deleteUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const userId = req.params.id;
     try {
       await this.userService.delete(userId);
       return res.status(204).json({});
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ errMsg: `Error deleting ${userId}`, error: err });
+    } catch (error) {
+      return next(error);
     }
   };
 
-  readonly getUniqueUser = async (req: Request, res: Response) => {
+  private getUniqueUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const userId = req.params.id;
     try {
       const retrievedUser = await this.userService.getById(userId);
       return res.status(200).json(retrievedUser);
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ errMsg: `Error retrieving user ${userId}`, error: err });
+    } catch (error) {
+      return next(error);
     }
   };
 
-  readonly getAllUsers = async (req: Request, res: Response) => {
+  private getAllUsers = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       const allUsers = await this.userService.getAll();
       return res.status(200).json(allUsers);
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ errMsg: `Error getting users`, error: err });
+    } catch (error) {
+      return next(error);
     }
   };
 }
