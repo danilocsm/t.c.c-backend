@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import Controller from "../interfaces/controller.interface";
 import { ItemsRepositoryImpl } from "../services/prisma/items.service";
 
@@ -25,7 +25,11 @@ export class ItemsController implements Controller {
     this.router.patch("/:id/addActivity", this.addActivityToItem);
   }
 
-  readonly createItem = async (req: Request, res: Response) => {
+  readonly createItem = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const { name, price, link, itemType } = req.body;
     try {
       const newItem = await this.itemsService.create({
@@ -35,71 +39,79 @@ export class ItemsController implements Controller {
         itemType,
       });
       return res.status(201).json(newItem);
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ errMsg: `Error creating new item`, error: err });
+    } catch (error) {
+      return next(error);
     }
   };
 
-  readonly getUnique = async (req: Request, res: Response) => {
+  readonly getUnique = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const itemId = req.params.id;
     try {
       const itemRetrieved = await this.itemsService.getById(itemId);
       return res.status(200).json(itemRetrieved);
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ errMsg: `Error retrieving item ${itemId}`, error: err });
+    } catch (error) {
+      return next(error);
     }
   };
 
-  readonly getAllItems = async (req: Request, res: Response) => {
+  readonly getAllItems = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       const allItems = await this.itemsService.getAll();
       return res.status(200).json(allItems);
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ errMsg: `Error getting all items`, error: err });
+    } catch (error) {
+      return next(error);
     }
   };
 
-  readonly updateItem = async (req: Request, res: Response) => {
+  readonly updateItem = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const itemId = req.params.id;
     const newData = req.body;
     try {
       const itemUpdated = await this.itemsService.update(itemId, newData);
       return res.status(200).json(itemUpdated);
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ errMsg: `Error updating item ${itemId}`, error: err });
+    } catch (error) {
+      return next(error);
     }
   };
 
-  readonly deleteItem = async (req: Request, res: Response) => {
+  readonly deleteItem = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const itemId = req.params.id;
     try {
       await this.itemsService.delete(itemId);
       return res.status(204).json({});
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ errMsg: `Error deleting item ${itemId}`, error: err });
+    } catch (error) {
+      return next(error);
     }
   };
 
-  readonly addActivityToItem = async (req: Request, res: Response) => {
+  readonly addActivityToItem = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const itemId = req.params.id;
-    const { activityId } = req.body.activityId;
+    const { activityId } = req.body;
     try {
       await this.itemsService.addActivity(itemId, activityId);
       return res.status(204).json({});
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ errMsg: `Error adding activity to ${itemId}` });
+    } catch (error) {
+      return next(error);
     }
   };
 }

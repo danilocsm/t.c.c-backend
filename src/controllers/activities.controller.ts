@@ -1,7 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import { ActivityRepositoryImpl } from "../services/prisma/activities.service";
 import Controller from "../interfaces/controller.interface";
-import HttpException from "../errors/httpexception.error";
 import { Activity } from "@prisma/client";
 
 export class ActivityController implements Controller {
