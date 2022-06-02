@@ -25,7 +25,7 @@ export class ItemsController implements Controller {
     this.router.patch("/:id/addActivity", this.addActivityToItem);
   }
 
-  readonly createItem = async (
+  private createItem = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -44,7 +44,7 @@ export class ItemsController implements Controller {
     }
   };
 
-  readonly getUnique = async (
+  private getUnique = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -58,7 +58,7 @@ export class ItemsController implements Controller {
     }
   };
 
-  readonly getAllItems = async (
+  private getAllItems = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -71,7 +71,7 @@ export class ItemsController implements Controller {
     }
   };
 
-  readonly updateItem = async (
+  private updateItem = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -86,7 +86,7 @@ export class ItemsController implements Controller {
     }
   };
 
-  readonly deleteItem = async (
+  private deleteItem = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -100,7 +100,7 @@ export class ItemsController implements Controller {
     }
   };
 
-  readonly addActivityToItem = async (
+  private addActivityToItem = async (
     req: Request,
     res: Response,
     next: NextFunction

@@ -1,4 +1,5 @@
 import { User } from "@prisma/client";
+import { UserAlreadyExists, UserNotFoundError } from "../../errors/user.error";
 import { prisma } from "../../prisma";
 import {
   UserCreateData,
@@ -6,8 +7,18 @@ import {
 } from "../../repositories/users.repository";
 
 export class UserRepositoryImpl implements UserRepository {
-  async create(user: UserCreateData): Promise<User> {
-    const { username, email, password, picture } = user;
+  async create({
+    username,
+    email,
+    password,
+    picture,
+  }: UserCreateData): Promise<User> {
+    const userExists = await prisma.user.findUnique({
+      where: { username: username },
+    });
+
+    if (userExists != null) throw new UserAlreadyExists(username);
+
     const userCreated = await prisma.user.create({
       data: { username, email, password, picture },
     });
@@ -15,6 +26,10 @@ export class UserRepositoryImpl implements UserRepository {
   }
 
   async update(id: string, newData: UserCreateData): Promise<User> {
+    const userExists = await prisma.user.findUnique({ where: { id: id } });
+
+    if (userExists == null) throw new UserNotFoundError(id);
+
     const userUpdated = await prisma.user.update({
       data: newData,
       where: { id: id },
@@ -23,11 +38,18 @@ export class UserRepositoryImpl implements UserRepository {
   }
 
   async delete(id: string): Promise<void> {
+    const userExists = await prisma.user.findUnique({ where: { id: id } });
+
+    if (userExists == null) throw new UserNotFoundError(id);
+
     await prisma.user.delete({ where: { id: id } });
   }
 
   async getById(id: string): Promise<User | null> {
     const userRetrieved = await prisma.user.findUnique({ where: { id: id } });
+
+    if (userRetrieved == null) throw new UserNotFoundError(id);
+
     return userRetrieved;
   }
 

@@ -19,7 +19,7 @@ export class TestimonialController implements Controller {
     this.router.delete("/:id/delete", this.deleteTestimonial);
   }
 
-  readonly createTestimonial = async (req: Request, res: Response) => {
+  private createTestimonial = async (req: Request, res: Response) => {
     const { text, author } = req.body;
     try {
       const createdTestimonial = await this.testimonialService.create({
@@ -34,7 +34,7 @@ export class TestimonialController implements Controller {
     }
   };
 
-  readonly deleteTestimonial = async (req: Request, res: Response) => {
+  private deleteTestimonial = async (req: Request, res: Response) => {
     const testimonialId = req.params.id;
     try {
       await this.testimonialService.delete(testimonialId);
@@ -46,7 +46,7 @@ export class TestimonialController implements Controller {
     }
   };
 
-  readonly getAllTestimonials = async (req: Request, res: Response) => {
+  private getAllTestimonials = async (req: Request, res: Response) => {
     try {
       const allTestimonials = await this.testimonialService.getAll();
       return res.status(200).json(allTestimonials);
