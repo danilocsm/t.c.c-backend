@@ -16,7 +16,7 @@ export class TestimonialController implements Controller {
 
     this.router.get("/all", this.getAllTestimonials);
 
-    this.router.delete("/:id/delete", this.deleteTestimonial);
+    this.router.delete("/:id", this.deleteTestimonial);
   }
 
   private createTestimonial = async (req: Request, res: Response) => {

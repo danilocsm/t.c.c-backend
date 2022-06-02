@@ -16,11 +16,11 @@ export class UserController implements Controller {
 
     this.router.get("/all", this.getAllUsers);
 
-    this.router.get("/:id/get", this.getUniqueUser);
+    this.router.get("/:id", this.getUniqueUser);
 
-    this.router.put("/:id/update", this.updateUser);
+    this.router.put("/:id", this.updateUser);
 
-    this.router.delete("/:id/delete", this.deleteUser);
+    this.router.delete("/:id", this.deleteUser);
   }
 
   private createUser = async (
