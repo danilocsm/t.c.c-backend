@@ -2,6 +2,8 @@ import express, { NextFunction, Request, Response } from "express";
 import { ActivityRepositoryImpl } from "../services/prisma/activities.service";
 import Controller from "../interfaces/controller.interface";
 import { Activity } from "@prisma/client";
+import { ActivityDTO } from "../dtos/activity.dto";
+import validationMiddleware from "../middlewares/validation.middleware";
 
 export class ActivityController implements Controller {
   public readonly path = "/activities";
@@ -14,13 +16,13 @@ export class ActivityController implements Controller {
   }
 
   initializeRoutes() {
-    this.router.post("/create", this.createActivity);
+    this.router.post("/create",  validationMiddleware(ActivityDTO, true), this.createActivity);
 
     this.router.get("/all", this.getAllActivities);
 
     this.router.get("/:id", this.getUnique);
 
-    this.router.put("/:id", this.updateActivity);
+    this.router.patch("/:id", validationMiddleware(ActivityDTO, true), this.updateActivity);
 
     this.router.patch("/:id/newItem", this.addItemToActivity);
 
