@@ -1,4 +1,9 @@
 import { Illness } from "@prisma/client";
+import { ActivityNotFoundError } from "../../errors/activity.error";
+import {
+  IllnessAlreadyExistsError,
+  IllnessNotFoundError,
+} from "../../errors/illness.error";
 import { prisma } from "../../prisma";
 import {
   IllnessCreateData,
@@ -12,6 +17,13 @@ export class IllnessRepositoryImpl implements IllnessRepository {
     symptoms,
     levelOfAttention,
   }: IllnessCreateData): Promise<Illness> {
+    const illnessExists = await prisma.illness.findUnique({
+      where: { name: name },
+    });
+
+    if (illnessExists != null)
+      throw new IllnessAlreadyExistsError(illnessExists.name);
+
     const newItem = await prisma.illness.create({
       data: { name, description, symptoms, levelOfAttention },
     });
@@ -19,6 +31,12 @@ export class IllnessRepositoryImpl implements IllnessRepository {
   }
 
   async update(id: string, newData: IllnessCreateData): Promise<Illness> {
+    const illnessExists = await prisma.illness.findUnique({
+      where: { id: id },
+    });
+
+    if (illnessExists == null) throw new IllnessNotFoundError(id);
+
     const updatedItem = await prisma.illness.update({
       data: newData,
       where: { id: id },
@@ -27,6 +45,12 @@ export class IllnessRepositoryImpl implements IllnessRepository {
   }
 
   async delete(id: string): Promise<void> {
+    const illnessExists = await prisma.illness.findUnique({
+      where: { id: id },
+    });
+
+    if (illnessExists == null) throw new IllnessNotFoundError(id);
+
     await prisma.illness.delete({ where: { id: id } });
   }
 
@@ -39,19 +63,22 @@ export class IllnessRepositoryImpl implements IllnessRepository {
     const targetIllness = await prisma.illness.findUnique({
       where: { id: id },
     });
+
+    if (targetIllness == null) throw new IllnessNotFoundError(id);
+
     return targetIllness;
   }
 
   async addActivity(id: string, activityId: string): Promise<void> {
-    const targetIllness = await prisma.illness.findUnique({
-      where: { id: id },
-    });
     const targetActivity = await prisma.activity.findUnique({
       where: { id: activityId },
     });
+    const targetIllness = await prisma.illness.findUnique({
+      where: { id: id },
+    });
 
-    if (targetIllness == null) throw new Error();
-    if (targetActivity == null) throw new Error();
+    if (targetActivity == null) throw new ActivityNotFoundError(activityId);
+    if (targetIllness == null) throw new IllnessNotFoundError(id);
 
     targetIllness.activitiesId.push(activityId);
     await prisma.illness.update({

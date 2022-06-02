@@ -32,7 +32,7 @@ export class ActivityController implements Controller {
     this.router.delete("/:id/delete", this.deleteActivity);
   }
 
-  private readonly createActivity = async (
+  private createActivity = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -48,13 +48,13 @@ export class ActivityController implements Controller {
         illnessesId,
         images,
       });
-      return res.status(200).json(activityCreated);
+      return res.status(201).json(activityCreated);
     } catch (error) {
       return next(error);
     }
   };
 
-  private readonly getUnique = async (
+  private getUnique = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -69,7 +69,7 @@ export class ActivityController implements Controller {
     }
   };
 
-  readonly getAllActivities = async (
+  private getAllActivities = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -83,7 +83,7 @@ export class ActivityController implements Controller {
     }
   };
 
-  readonly updateActivity = async (
+  private updateActivity = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -99,7 +99,7 @@ export class ActivityController implements Controller {
     }
   };
 
-  readonly deleteActivity = async (
+  private deleteActivity = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -107,13 +107,13 @@ export class ActivityController implements Controller {
     const activityId = req.params.id;
     try {
       await this.activityService.delete(activityId);
-      return res.status(200).json({});
+      return res.status(204).json({});
     } catch (error) {
       return next(error);
     }
   };
 
-  readonly addImageToActivity = async (
+  private addImageToActivity = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -122,13 +122,13 @@ export class ActivityController implements Controller {
     const { newImage } = req.body;
     try {
       await this.activityService.addImage(activityId, newImage);
-      return res.status(200).json({});
+      return res.status(204).json({});
     } catch (error) {
       return next(error);
     }
   };
 
-  readonly addItemToActivity = async (
+  private addItemToActivity = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -137,13 +137,13 @@ export class ActivityController implements Controller {
     const { itemId } = req.body;
     try {
       await this.activityService.addItem(activityId, itemId);
-      return res.status(200).json({});
+      return res.status(204).json({});
     } catch (error) {
       return next(error);
     }
   };
 
-  readonly addIllnessToActivity = async (
+  private addIllnessToActivity = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -152,7 +152,7 @@ export class ActivityController implements Controller {
     const { illnessId } = req.body;
     try {
       await this.activityService.addIllness(activityId, illnessId);
-      return res.status(200).json({});
+      return res.status(204).json({});
     } catch (error) {
       return next(error);
     }

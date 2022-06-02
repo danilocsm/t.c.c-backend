@@ -38,7 +38,7 @@ export class TestimonialController implements Controller {
     const testimonialId = req.params.id;
     try {
       await this.testimonialService.delete(testimonialId);
-      return res.status(200).json({});
+      return res.status(204).json({});
     } catch (err) {
       return res
         .status(500)

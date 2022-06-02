@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import Controller from "../interfaces/controller.interface";
 import { IllnessRepositoryImpl } from "../services/prisma/illness.service";
 
@@ -25,7 +25,11 @@ export class IllnessController implements Controller {
     this.router.patch("/:id/addActivity", this.addActivityToIllness);
   }
 
-  readonly createIllness = async (req: Request, res: Response) => {
+  private createIllness = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const { name, description, symptoms, levelOfAttention } = req.body;
     try {
       const newIllness = await this.illnessService.create({
@@ -35,35 +39,43 @@ export class IllnessController implements Controller {
         levelOfAttention,
       });
       return res.status(201).json(newIllness);
-    } catch (err) {
-      return res.status(500).json({ errMsg: `Error creating new illness` });
+    } catch (error) {
+      return next(error);
     }
   };
 
-  readonly getUnique = async (req: Request, res: Response) => {
+  private getUnique = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const illnessId = req.params.id;
     try {
       const retrievedIllness = await this.illnessService.getById(illnessId);
-      return res.status(201).json(retrievedIllness);
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ errMsg: `Error retrieving illness ${illnessId}` });
+      return res.status(200).json(retrievedIllness);
+    } catch (error) {
+      return next(error);
     }
   };
 
-  readonly getAllIllnesses = async (req: Request, res: Response) => {
+  private getAllIllnesses = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       const allIllnesses = await this.illnessService.getAll();
-      return res.status(201).json(allIllnesses);
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ errMsg: `Error getting all illnesses`, error: err });
+      return res.status(200).json(allIllnesses);
+    } catch (error) {
+      return next(error);
     }
   };
 
-  readonly updateIllness = async (req: Request, res: Response) => {
+  private updateIllness = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const illnessId = req.params.id;
     const newData = req.body;
     try {
@@ -71,36 +83,38 @@ export class IllnessController implements Controller {
         illnessId,
         newData
       );
-      return res.status(201).json(updatedIllness);
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ errMsg: `Error updating illness ${illnessId}` });
+      return res.status(200).json(updatedIllness);
+    } catch (error) {
+      return next(error);
     }
   };
 
-  readonly deleteIllness = async (req: Request, res: Response) => {
+  private deleteIllness = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const illnessId = req.params.id;
     try {
       await this.illnessService.delete(illnessId);
-      return res.status(201).json({});
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ errMsg: `Error deleting illness ${illnessId}` });
+      return res.status(204).json({});
+    } catch (error) {
+      return next(error);
     }
   };
 
-  readonly addActivityToIllness = async (req: Request, res: Response) => {
+  private addActivityToIllness = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const illnessId = req.params.id;
-    const { activityId } = req.body.activityId;
+    const { activityId } = req.body;
     try {
       await this.illnessService.addActivity(illnessId, activityId);
-      return res.status(201).json({});
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ errMsg: `Error adding activity to illness ${illnessId}` });
+      return res.status(204).json({});
+    } catch (error) {
+      return next(error);
     }
   };
 }

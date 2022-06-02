@@ -3,20 +3,20 @@ import GenericError from "../interfaces/error.interface";
 export class ActivityNotFoundError extends Error implements GenericError {
   readonly status: number;
   readonly message: string;
-  constructor(activityId: string) {
+  constructor(activityName: string) {
     super();
     this.status = 404;
-    this.message = `Activity with id ${activityId} not found`;
+    this.message = `Activity ${activityName} not found`;
   }
 }
 
 export class ActivityAlreadyExistsError extends Error implements GenericError {
     readonly status: number;
     readonly message: string;
-    constructor(activityId: string) {
+    constructor(activityName: string) {
         super();
         this.status = 400;
-        this.message = `Activity with id ${activityId} already exists`;
+        this.message = `Activity ${activityName} already exists`;
     }
 }
 
