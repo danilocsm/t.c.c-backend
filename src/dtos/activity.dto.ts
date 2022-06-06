@@ -1,28 +1,31 @@
 import { Difficulty } from "@prisma/client";
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsEmpty, IsNotEmpty, IsString, ValidateIf } from "class-validator";
 import { ActivityCreateData } from "../repositories/activities.repository";
 
 export class ActivityDTO implements ActivityCreateData {
   @IsNotEmpty()
   @IsString()
-  public name: string;
+  name: string;
 
   @IsNotEmpty()
   @IsString()
-  public description: string;
+  description: string;
 
   @IsNotEmpty()
   @IsString()
   difficulty: Difficulty;
 
-  @IsString({each: true})
-  itemsId?: string[] | undefined;
-  
-  @IsString({each: true})
-  illnessesId?: string[] | undefined;
+  @ValidateIf((obj) => obj.itemsId != undefined)
+  @IsString({ each: true })
+  itemsId?: string[];
 
-  @IsString({each: true})
-  images?: string[] | undefined;
+  @ValidateIf((obj) => obj.illnessesId != undefined)
+  @IsString({ each: true })
+  illnessesId?: string[];
+
+  @ValidateIf((obj) => obj.images != undefined)
+  @IsString({ each: true, message: "All images must be strings." })
+  images?: string[];
 
   constructor(
     name: string,

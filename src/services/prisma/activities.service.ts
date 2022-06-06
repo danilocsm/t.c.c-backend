@@ -4,6 +4,7 @@ import {
   ActivityNotFoundError,
 } from "../../errors/activity.error";
 import { IllnessNotFoundError } from "../../errors/illness.error";
+import { ItemNotFoundError } from "../../errors/items.error";
 import { prisma } from "../../prisma";
 import {
   ActivityCreateData,
@@ -78,7 +79,7 @@ export class ActivityRepositoryImpl implements ActivityRepository {
       where: { id: id },
     });
 
-    if (targetItem == null) throw new Error(); // updated this to a custom error
+    if (targetItem == null) throw new ItemNotFoundError(itemId); // updated this to a custom error
     if (targetActivity == null) throw new ActivityNotFoundError(id);
 
     targetActivity.itemsId.push(itemId);

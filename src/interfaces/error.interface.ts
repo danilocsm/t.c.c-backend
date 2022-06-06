@@ -1,4 +1,5 @@
-export default interface GenericError{
-    status: number;
-    message: string;
+export default interface GenericError {
+  status: number;
+  message: string;
+  args: any;
 }

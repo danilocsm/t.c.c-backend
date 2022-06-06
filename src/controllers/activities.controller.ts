@@ -16,7 +16,7 @@ export class ActivityController implements Controller {
   }
 
   initializeRoutes() {
-    this.router.post("/create",  validationMiddleware(ActivityDTO, true), this.createActivity);
+    this.router.post("/create",  validationMiddleware(ActivityDTO, false), this.createActivity);
 
     this.router.get("/all", this.getAllActivities);
 
