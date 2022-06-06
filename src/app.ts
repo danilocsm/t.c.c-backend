@@ -13,12 +13,12 @@ export default class App {
 
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
+    this.app.use(errorMiddleware); // should always be the last middleware to return custom error data
   }
 
   private initializeMiddlewares() {
     this.app.use(cors());
     this.app.use(express.json({ limit: "50mb" }));
-    this.app.use(errorMiddleware);
   }
 
   private initializeControllers(controllers: Controller[]) {
