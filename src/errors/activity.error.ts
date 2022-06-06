@@ -21,14 +21,3 @@ export class ActivityAlreadyExistsError implements GenericError {
     this.args = {};
   }
 }
-
-export class ActivityFieldsInvalidError implements GenericError {
-  readonly status: number;
-  readonly message: string;
-  readonly args: any;
-  constructor(args: any) {
-    this.status = 400;
-    this.message = `Fields invalid`;
-    this.args = args;
-  }
-}
