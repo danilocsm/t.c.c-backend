@@ -34,7 +34,6 @@ export default function validationMiddleware(
     const classCreated = plainToInstance(validateSchema, req.body);
     validate(classCreated, {
       skipMissingProperties,
-      stopAtFirstError: true,
     }).then((errors) => {
       if (errors.length === 0) return next();
 
