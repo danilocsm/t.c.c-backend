@@ -24,7 +24,7 @@ export class ActivityRepositoryImpl implements ActivityRepository {
       where: { name: name },
     });
 
-    if (activity != null) throw new ActivityAlreadyExistsError(activity.id);
+    if (activity != null) throw new ActivityAlreadyExistsError(activity.name);
 
     const newActivity = await prisma.activity.create({
       data: { name, description, difficulty, itemsId, illnessesId, images },
