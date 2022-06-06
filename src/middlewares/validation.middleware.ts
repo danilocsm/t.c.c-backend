@@ -1,8 +1,7 @@
 import { plainToInstance } from "class-transformer";
 import { validate, ValidationError } from "class-validator";
 import { NextFunction, Request, Response } from "express";
-import { ActivityDTO } from "../dtos/activity.dto";
-import { ActivityFieldsInvalidError } from "../errors/activity.error";
+import { FieldsInvalidError } from "../errors/fields.error";
 
 export type ValidationErrorArgs = {
   values: any[];
@@ -37,11 +36,7 @@ export default function validationMiddleware(
     }).then((errors) => {
       if (errors.length === 0) return next();
 
-      if (classCreated instanceof ActivityDTO)
-        return next(new ActivityFieldsInvalidError(buildArgs(errors)));
-      else if (true) {
-        return next();
-      }
+      return next(new FieldsInvalidError(buildArgs(errors)));
     });
   };
 }
