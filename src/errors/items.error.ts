@@ -8,7 +8,7 @@ export class ItemNotFoundError extends Error implements GenericError {
     this.status = 404;
     this.message = `Item ${id} not found`;
   }
-  args: any;
+  additionalInfo: any;
 }
 
 export class ItemAlreadyExistsError extends Error implements GenericError {
@@ -19,5 +19,5 @@ export class ItemAlreadyExistsError extends Error implements GenericError {
     this.status = 400;
     this.message = `Item ${itemName} already exists`;
   }
-  args: any;
+  additionalInfo: any;
 }

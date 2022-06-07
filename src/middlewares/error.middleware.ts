@@ -9,6 +9,6 @@ export default function errorMiddleware(
 ) {
   const status = error.status || 500;
   const message = error.message || "Internal Server Error";
-  const args = error.args;
-  return res.status(status).send({ status, message, args });
+  const additionalInfo = error.additionalInfo;
+  return res.status(status).send({ status, message, additionalInfo });
 }

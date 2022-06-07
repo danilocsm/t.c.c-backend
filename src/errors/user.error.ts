@@ -8,7 +8,7 @@ export class UserNotFoundError extends Error implements GenericError {
     this.status = 404;
     this.message = `User ${id} not found`;
   }
-  args: any;
+  additionalInfo: any;
 }
 
 export class UserAlreadyExists extends Error implements GenericError {
@@ -19,5 +19,5 @@ export class UserAlreadyExists extends Error implements GenericError {
     this.status = 400;
     this.message = `User ${userName} already exists`;
   }
-  args: any;
+  additionalInfo: any;
 }
