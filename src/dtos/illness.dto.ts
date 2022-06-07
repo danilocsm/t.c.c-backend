@@ -1,8 +1,7 @@
 import { LevelOfAttention } from "@prisma/client";
 import { IsNotEmpty, IsString } from "class-validator";
-import { IllnessCreateData } from "../repositories/illness.repository";
 
-export class IllnessDTO implements IllnessCreateData {
+export class IllnessDTO {
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -20,7 +19,7 @@ export class IllnessDTO implements IllnessCreateData {
   levelOfAttention: LevelOfAttention;
 
   @IsString({ each: true })
-  activitiesId: string[];
+  activitiesId?: string[];
 
   constructor(
     name: string,

@@ -1,15 +1,9 @@
 import { Illness, LevelOfAttention } from "@prisma/client";
-
-export interface IllnessCreateData {
-  name: string;
-  description: string;
-  symptoms: string[];
-  levelOfAttention: LevelOfAttention;
-}
+import { IllnessDTO } from "../dtos/illness.dto";
 
 export interface IllnessRepository {
-  create(illness: IllnessCreateData): Promise<Illness>;
-  update(id: string, newData: IllnessCreateData): Promise<Illness>;
+  create(illness: IllnessDTO): Promise<Illness>;
+  update(id: string, newData: IllnessDTO): Promise<Illness>;
   delete(id: string): Promise<void>;
   getAll(): Promise<Illness[]>;
   getById(id: string): Promise<Illness | null>;

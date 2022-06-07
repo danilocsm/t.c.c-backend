@@ -1,14 +1,12 @@
 import { Illness } from "@prisma/client";
+import { IllnessDTO } from "../../dtos/illness.dto";
 import { ActivityNotFoundError } from "../../errors/activity.error";
 import {
   IllnessAlreadyExistsError,
   IllnessNotFoundError,
 } from "../../errors/illness.error";
 import { prisma } from "../../prisma";
-import {
-  IllnessCreateData,
-  IllnessRepository,
-} from "../../repositories/illness.repository";
+import { IllnessRepository } from "../../repositories/illness.repository";
 
 export class IllnessRepositoryImpl implements IllnessRepository {
   async create({
@@ -16,7 +14,7 @@ export class IllnessRepositoryImpl implements IllnessRepository {
     description,
     symptoms,
     levelOfAttention,
-  }: IllnessCreateData): Promise<Illness> {
+  }: IllnessDTO): Promise<Illness> {
     const illnessExists = await prisma.illness.findUnique({
       where: { name: name },
     });
@@ -30,7 +28,7 @@ export class IllnessRepositoryImpl implements IllnessRepository {
     return newItem;
   }
 
-  async update(id: string, newData: IllnessCreateData): Promise<Illness> {
+  async update(id: string, newData: IllnessDTO): Promise<Illness> {
     const illnessExists = await prisma.illness.findUnique({
       where: { id: id },
     });
