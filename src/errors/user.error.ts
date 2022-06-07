@@ -1,23 +1,23 @@
 import GenericError from "../interfaces/error.interface";
 
-export class UserNotFoundError extends Error implements GenericError {
+export class UserNotFoundError implements GenericError {
   status: number;
   message: string;
+  additionalInfo: any;
   constructor(id: string) {
-    super();
     this.status = 404;
     this.message = `User ${id} not found`;
+    this.additionalInfo = {};
   }
-  additionalInfo: any;
 }
 
-export class UserAlreadyExists extends Error implements GenericError {
+export class UserAlreadyExists implements GenericError {
   status: number;
   message: string;
-  constructor(userName: string) {
-    super();
-    this.status = 400;
-    this.message = `User ${userName} already exists`;
-  }
   additionalInfo: any;
+  constructor(username: string) {
+    this.status = 400;
+    this.message = `User ${username} already exists`;
+    this.additionalInfo = {};
+  }
 }
