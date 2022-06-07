@@ -53,6 +53,22 @@ export class UserRepositoryImpl implements UserRepository {
     return userRetrieved;
   }
 
+  async getByUsername(username: string): Promise<User> {
+    const user = await prisma.user.findUnique({where: {username: username}});
+
+    if (user === null) throw new UserNotFoundError(username);
+  
+    return user;
+  }
+
+  async getByEmail(email: string): Promise<User> {
+    const user = await prisma.user.findUnique({where: {email: email}});
+
+    if (user === null) throw new UserNotFoundError(email);
+  
+    return user;
+  }
+
   async getAll(): Promise<User[]> {
     const allUsers = await prisma.user.findMany();
     return allUsers;
