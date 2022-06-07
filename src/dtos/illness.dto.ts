@@ -1,5 +1,5 @@
 import { LevelOfAttention } from "@prisma/client";
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsString, ValidateIf } from "class-validator";
 
 export class IllnessDTO {
   @IsString()
@@ -18,6 +18,7 @@ export class IllnessDTO {
   @IsNotEmpty()
   levelOfAttention: LevelOfAttention;
 
+  @ValidateIf((obj) => obj.activitiesId !== undefined)
   @IsString({ each: true })
   activitiesId?: string[];
 

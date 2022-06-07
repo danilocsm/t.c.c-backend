@@ -1,5 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
+import { ItemDTO } from "../dtos/item.dto";
 import Controller from "../interfaces/controller.interface";
+import validationMiddleware from "../middlewares/validation.middleware";
 import { ItemsRepositoryImpl } from "../services/prisma/items.service";
 
 export class ItemsController implements Controller {
@@ -12,17 +14,25 @@ export class ItemsController implements Controller {
   }
 
   initializeRoutes() {
-    this.router.post("/create", this.createItem);
+    this.router.post(
+      "/create",
+      validationMiddleware(ItemDTO, false),
+      this.createItem
+    );
 
     this.router.get("/all", this.getAllItems);
 
     this.router.get("/:id", this.getUnique);
 
-    this.router.put("/:id", this.updateItem);
-
-    this.router.delete("/:id", this.deleteItem);
+    this.router.patch(
+      "/:id",
+      validationMiddleware(ItemDTO, true),
+      this.updateItem
+    );
 
     this.router.patch("/:id/newActivity", this.addActivityToItem);
+
+    this.router.delete("/:id", this.deleteItem);
   }
 
   private createItem = async (

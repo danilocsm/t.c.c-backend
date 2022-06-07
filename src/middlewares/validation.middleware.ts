@@ -9,7 +9,7 @@ export type ValidationErrorArgs = {
   constraints: any[];
 };
 
-const buildArgs = (errors: ValidationError[]) => {
+const buildAdditionalInfo = (errors: ValidationError[]) => {
   const args: ValidationErrorArgs = {
     values: [],
     properties: [],
@@ -36,7 +36,7 @@ export default function validationMiddleware(
     }).then((errors) => {
       if (errors.length === 0) return next();
 
-      return next(new FieldsInvalidError(buildArgs(errors)));
+      return next(new FieldsInvalidError(buildAdditionalInfo(errors)));
     });
   };
 }
