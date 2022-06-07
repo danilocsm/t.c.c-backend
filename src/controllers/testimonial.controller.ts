@@ -1,5 +1,7 @@
 import express, { Request, Response } from "express";
+import { TestimonialDTO } from "../dtos/testimonial.dto";
 import Controller from "../interfaces/controller.interface";
+import validationMiddleware from "../middlewares/validation.middleware";
 import { TestimonialRepositoryImpl } from "../services/prisma/testimonial.service";
 
 export class TestimonialController implements Controller {
@@ -12,7 +14,11 @@ export class TestimonialController implements Controller {
   }
 
   initializeRoutes() {
-    this.router.post("/create", this.createTestimonial);
+    this.router.post(
+      "/create",
+      validationMiddleware(TestimonialDTO, false),
+      this.createTestimonial
+    );
 
     this.router.get("/all", this.getAllTestimonials);
 
