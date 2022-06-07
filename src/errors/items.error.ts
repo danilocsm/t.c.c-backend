@@ -1,23 +1,23 @@
 import GenericError from "../interfaces/error.interface";
 
-export class ItemNotFoundError extends Error implements GenericError {
+export class ItemNotFoundError implements GenericError {
   status: number;
   message: string;
+  additionalInfo: any;
   constructor(id: string) {
-    super();
     this.status = 404;
     this.message = `Item ${id} not found`;
+    this.additionalInfo = {};
   }
-  additionalInfo: any;
 }
 
-export class ItemAlreadyExistsError extends Error implements GenericError {
+export class ItemAlreadyExistsError implements GenericError {
   status: number;
   message: string;
+  additionalInfo: any;
   constructor(itemName: string) {
-    super();
     this.status = 400;
     this.message = `Item ${itemName} already exists`;
+    this.additionalInfo = {};
   }
-  additionalInfo: any;
 }
