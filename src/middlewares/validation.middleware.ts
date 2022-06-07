@@ -3,7 +3,7 @@ import { validate, ValidationError } from "class-validator";
 import { NextFunction, Request, Response } from "express";
 import { FieldsInvalidError } from "../errors/fields.error";
 
-export type ValidationErrorArgs = {
+type ValidationErrorArgs = {
   values: any[];
   properties: string[];
   constraints: any[];
