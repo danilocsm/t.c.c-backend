@@ -1,8 +1,7 @@
 import { Difficulty } from "@prisma/client";
 import { IsEmpty, IsNotEmpty, IsString, ValidateIf } from "class-validator";
-import { ActivityCreateData } from "../repositories/activities.repository";
 
-export class ActivityDTO implements ActivityCreateData {
+export class ActivityDTO {
   @IsNotEmpty()
   @IsString()
   name: string;

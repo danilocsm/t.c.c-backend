@@ -1,17 +1,9 @@
 import { Activity, Difficulty } from "@prisma/client";
-
-export interface ActivityCreateData {
-  name: string;
-  description: string;
-  difficulty: Difficulty;
-  itemsId?: string[];
-  illnessesId?: string[];
-  images?: string[];
-}
+import { ActivityDTO } from "../dtos/activity.dto";
 
 export interface ActivityRepository {
-  create(activity: ActivityCreateData): Promise<Activity>;
-  update(id: string, newData: ActivityCreateData): Promise<Activity>;
+  create(activity: ActivityDTO): Promise<Activity>;
+  update(id: string, newData: ActivityDTO): Promise<Activity>;
   delete(id: string): Promise<void>;
   getAll(): Promise<Activity[]>;
   getById(id: string): Promise<Activity>;

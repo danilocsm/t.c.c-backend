@@ -1,4 +1,5 @@
 import { Activity } from "@prisma/client";
+import { ActivityDTO } from "../../dtos/activity.dto";
 import {
   ActivityAlreadyExistsError,
   ActivityNotFoundError,
@@ -6,10 +7,7 @@ import {
 import { IllnessNotFoundError } from "../../errors/illness.error";
 import { ItemNotFoundError } from "../../errors/items.error";
 import { prisma } from "../../prisma";
-import {
-  ActivityCreateData,
-  ActivityRepository,
-} from "../../repositories/activities.repository";
+import { ActivityRepository } from "../../repositories/activities.repository";
 
 export class ActivityRepositoryImpl implements ActivityRepository {
   async create({
@@ -19,7 +17,7 @@ export class ActivityRepositoryImpl implements ActivityRepository {
     itemsId,
     illnessesId,
     images,
-  }: ActivityCreateData): Promise<Activity> {
+  }: ActivityDTO): Promise<Activity> {
     const activity = await prisma.activity.findUnique({
       where: { name: name },
     });
@@ -32,7 +30,7 @@ export class ActivityRepositoryImpl implements ActivityRepository {
     return newActivity;
   }
 
-  async update(id: string, newData: ActivityCreateData): Promise<Activity> {
+  async update(id: string, newData: ActivityDTO): Promise<Activity> {
     const activityExists = await prisma.activity.findUnique({
       where: { id: id },
     });
