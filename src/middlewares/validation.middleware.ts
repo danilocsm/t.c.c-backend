@@ -3,14 +3,14 @@ import { validate, ValidationError } from "class-validator";
 import { NextFunction, Request, Response } from "express";
 import { FieldsInvalidError } from "../errors/fields.error";
 
-type ValidationErrorArgs = {
+type ValidationErrorInfo = {
   values: any[];
   properties: string[];
   constraints: any[];
 };
 
 const buildAdditionalInfo = (errors: ValidationError[]) => {
-  const args: ValidationErrorArgs = {
+  const args: ValidationErrorInfo = {
     values: [],
     properties: [],
     constraints: [],
