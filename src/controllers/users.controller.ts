@@ -1,5 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
+import { UserDTO } from "../dtos/user.dto";
 import Controller from "../interfaces/controller.interface";
+import validationMiddleware from "../middlewares/validation.middleware";
 import { UserRepositoryImpl } from "../services/prisma/user.service";
 
 export class UserController implements Controller {
@@ -12,13 +14,21 @@ export class UserController implements Controller {
   }
 
   initializeRoutes() {
-    this.router.post("/create", this.createUser);
+    this.router.post(
+      "/create",
+      validationMiddleware(UserDTO, false),
+      this.createUser
+    );
 
     this.router.get("/all", this.getAllUsers);
 
     this.router.get("/:id", this.getUniqueUser);
 
-    this.router.put("/:id", this.updateUser);
+    this.router.patch(
+      "/:id",
+      validationMiddleware(UserDTO, true),
+      this.updateUser
+    );
 
     this.router.delete("/:id", this.deleteUser);
   }
