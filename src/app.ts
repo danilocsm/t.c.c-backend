@@ -1,3 +1,4 @@
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import Controller from "./interfaces/controller.interface";
@@ -10,15 +11,15 @@ export default class App {
   constructor(controllers: Controller[], port: number) {
     this.app = express();
     this.appPort = process.env.PORT || port;
-
-    this.initializeMiddlewares();
-    this.initializeControllers(controllers);
-    this.app.use(errorMiddleware); // should always be the last middleware to return custom error data
+    this.initializeMiddlewares(controllers);
   }
 
-  private initializeMiddlewares() {
+  private initializeMiddlewares(controllers: Controller[]) {
     this.app.use(cors());
     this.app.use(express.json({ limit: "50mb" }));
+    this.app.use(cookieParser());
+    this.initializeControllers(controllers);
+    this.app.use(errorMiddleware); // 
   }
 
   private initializeControllers(controllers: Controller[]) {

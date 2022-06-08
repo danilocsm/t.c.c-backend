@@ -4,6 +4,7 @@ import Controller from "../interfaces/controller.interface";
 import { Activity } from "@prisma/client";
 import { ActivityDTO } from "../dtos/activity.dto";
 import validationMiddleware from "../middlewares/validation.middleware";
+import authMiddleware from "../middlewares/auth.middleware";
 
 export class ActivityController implements Controller {
   public readonly path = "/activities";
@@ -16,15 +17,17 @@ export class ActivityController implements Controller {
   }
 
   initializeRoutes() {
+    this.router.get("/all", this.getAllActivities);
+
+    this.router.get("/:id", this.getUnique);
+
+    this.router.use(authMiddleware);
+    
     this.router.post(
       "/create",
       validationMiddleware(ActivityDTO, false),
       this.createActivity
     );
-
-    this.router.get("/all", this.getAllActivities);
-
-    this.router.get("/:id", this.getUnique);
 
     this.router.patch(
       "/:id",

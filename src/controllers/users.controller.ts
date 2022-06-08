@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import { UserDTO } from "../dtos/user.dto";
 import Controller from "../interfaces/controller.interface";
+import authMiddleware from "../middlewares/auth.middleware";
 import validationMiddleware from "../middlewares/validation.middleware";
 import { UserRepositoryImpl } from "../services/prisma/user.service";
 
@@ -14,6 +15,8 @@ export class UserController implements Controller {
   }
 
   initializeRoutes() {
+    this.router.use(authMiddleware);
+
     this.router.post(
       "/create",
       validationMiddleware(UserDTO, false),

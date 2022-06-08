@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import { IllnessDTO } from "../dtos/illness.dto";
 import Controller from "../interfaces/controller.interface";
+import authMiddleware from "../middlewares/auth.middleware";
 import validationMiddleware from "../middlewares/validation.middleware";
 import { IllnessRepositoryImpl } from "../services/prisma/illness.service";
 
@@ -14,15 +15,17 @@ export class IllnessController implements Controller {
   }
 
   initializeRoutes() {
+    this.router.get("/all", this.getAllIllnesses);
+
+    this.router.get("/:id", this.getUnique);
+
+    this.router.use(authMiddleware);
+
     this.router.post(
       "/create",
       validationMiddleware(IllnessDTO, false),
       this.createIllness
     );
-
-    this.router.get("/all", this.getAllIllnesses);
-
-    this.router.get("/:id", this.getUnique);
 
     this.router.patch(
       "/:id",
