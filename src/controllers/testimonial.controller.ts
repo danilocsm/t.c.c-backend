@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { TestimonialDTO } from "../dtos/testimonial.dto";
 import Controller from "../interfaces/controller.interface";
+import authMiddleware from "../middlewares/auth.middleware";
 import validationMiddleware from "../middlewares/validation.middleware";
 import { TestimonialRepositoryImpl } from "../services/prisma/testimonial.service";
 
@@ -21,6 +22,8 @@ export class TestimonialController implements Controller {
     );
 
     this.router.get("/all", this.getAllTestimonials);
+    
+    this.router.use(authMiddleware);
 
     this.router.delete("/:id", this.deleteTestimonial);
   }

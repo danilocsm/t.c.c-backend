@@ -14,10 +14,10 @@ export class UserRepositoryImpl implements UserRepository {
     picture,
   }: UserCreateData): Promise<User> {
     const userExists = await prisma.user.findUnique({
-      where: { username: username },
+      where: { email: email },
     });
 
-    if (userExists != null) throw new UserAlreadyExists(username);
+    if (userExists != null) throw new UserAlreadyExists(email);
 
     const userCreated = await prisma.user.create({
       data: { username, email, password, picture },
@@ -51,6 +51,14 @@ export class UserRepositoryImpl implements UserRepository {
     if (userRetrieved == null) throw new UserNotFoundError(id);
 
     return userRetrieved;
+  }
+
+  async getByEmail(email: string): Promise<User> {
+    const user = await prisma.user.findUnique({where: {email: email}});
+
+    if (user === null) throw new UserNotFoundError(email);
+  
+    return user;
   }
 
   async getAll(): Promise<User[]> {

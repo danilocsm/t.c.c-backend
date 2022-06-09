@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import { ItemDTO } from "../dtos/item.dto";
 import Controller from "../interfaces/controller.interface";
+import authMiddleware from "../middlewares/auth.middleware";
 import validationMiddleware from "../middlewares/validation.middleware";
 import { ItemsRepositoryImpl } from "../services/prisma/items.service";
 
@@ -14,15 +15,17 @@ export class ItemsController implements Controller {
   }
 
   initializeRoutes() {
+    this.router.get("/all", this.getAllItems);
+
+    this.router.get("/:id", this.getUnique);
+
+    this.router.use(authMiddleware);
+
     this.router.post(
       "/create",
       validationMiddleware(ItemDTO, false),
       this.createItem
     );
-
-    this.router.get("/all", this.getAllItems);
-
-    this.router.get("/:id", this.getUnique);
 
     this.router.patch(
       "/:id",
