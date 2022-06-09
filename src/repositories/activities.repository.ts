@@ -1,4 +1,4 @@
-import { Activity, Difficulty } from "@prisma/client";
+import { Activity } from "@prisma/client";
 import { ActivityDTO } from "../dtos/activity.dto";
 
 export interface ActivityRepository {

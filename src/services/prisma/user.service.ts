@@ -45,7 +45,7 @@ export class UserRepositoryImpl implements UserRepository {
     await prisma.user.delete({ where: { id: id } });
   }
 
-  async getById(id: string): Promise<User | null> {
+  async getById(id: string): Promise<User> {
     const userRetrieved = await prisma.user.findUnique({ where: { id: id } });
 
     if (userRetrieved == null) throw new UserNotFoundError(id);
@@ -54,10 +54,10 @@ export class UserRepositoryImpl implements UserRepository {
   }
 
   async getByEmail(email: string): Promise<User> {
-    const user = await prisma.user.findUnique({where: {email: email}});
+    const user = await prisma.user.findUnique({ where: { email: email } });
 
     if (user === null) throw new UserNotFoundError(email);
-  
+
     return user;
   }
 

@@ -1,6 +1,9 @@
 import { Item } from "@prisma/client";
 import { ActivityNotFoundError } from "../../errors/activity.error";
-import { ItemAlreadyExistsError, ItemNotFoundError } from "../../errors/items.error";
+import {
+  ItemAlreadyExistsError,
+  ItemNotFoundError,
+} from "../../errors/items.error";
 import { prisma } from "../../prisma";
 import {
   ItemCreateData,
@@ -60,8 +63,8 @@ export class ItemsRepositoryImpl implements ItemsRepository {
       where: { id: activityId },
     });
 
-    if ( targetItem == null) throw new ItemNotFoundError(itemId);
-    if ( targetActivity == null) throw new ActivityNotFoundError(activityId);
+    if (targetItem == null) throw new ItemNotFoundError(itemId);
+    if (targetActivity == null) throw new ActivityNotFoundError(activityId);
 
     targetItem.activitiesId.push(activityId);
     await prisma.illness.update({

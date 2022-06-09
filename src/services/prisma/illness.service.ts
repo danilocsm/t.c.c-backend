@@ -57,7 +57,7 @@ export class IllnessRepositoryImpl implements IllnessRepository {
     return allIllnesses;
   }
 
-  async getById(id: string): Promise<Illness | null> {
+  async getById(id: string): Promise<Illness> {
     const targetIllness = await prisma.illness.findUnique({
       where: { id: id },
     });

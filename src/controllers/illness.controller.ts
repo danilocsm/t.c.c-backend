@@ -43,13 +43,10 @@ export class IllnessController implements Controller {
     res: Response,
     next: NextFunction
   ) => {
-    const { name, description, symptoms, levelOfAttention } = req.body;
+    const illness: IllnessDTO = req.body;
     try {
       const newIllness = await this.illnessService.create({
-        name,
-        description,
-        symptoms,
-        levelOfAttention,
+        ...illness,
       });
       return res.status(201).json(newIllness);
     } catch (error) {
@@ -90,11 +87,11 @@ export class IllnessController implements Controller {
     next: NextFunction
   ) => {
     const illnessId = req.params.id;
-    const newData = req.body;
+    const newData: IllnessDTO = req.body;
     try {
       const updatedIllness = await this.illnessService.update(
         illnessId,
-        newData
+        {...newData} 
       );
       return res.status(200).json(updatedIllness);
     } catch (error) {

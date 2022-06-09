@@ -22,18 +22,17 @@ export class TestimonialController implements Controller {
     );
 
     this.router.get("/all", this.getAllTestimonials);
-    
+
     this.router.use(authMiddleware);
 
     this.router.delete("/:id", this.deleteTestimonial);
   }
 
   private createTestimonial = async (req: Request, res: Response) => {
-    const { text, author } = req.body;
+    const testimonial: TestimonialDTO = req.body;
     try {
       const createdTestimonial = await this.testimonialService.create({
-        text,
-        author,
+        ...testimonial
       });
       return res.status(201).json(createdTestimonial);
     } catch (err) {

@@ -43,13 +43,10 @@ export class ItemsController implements Controller {
     res: Response,
     next: NextFunction
   ) => {
-    const { name, price, link, itemType } = req.body;
+    const item: ItemDTO = req.body;
     try {
       const newItem = await this.itemsService.create({
-        name,
-        price,
-        link,
-        itemType,
+        ...item,
       });
       return res.status(201).json(newItem);
     } catch (error) {
@@ -90,9 +87,11 @@ export class ItemsController implements Controller {
     next: NextFunction
   ) => {
     const itemId = req.params.id;
-    const newData = req.body;
+    const newData: ItemDTO = req.body;
     try {
-      const itemUpdated = await this.itemsService.update(itemId, newData);
+      const itemUpdated = await this.itemsService.update(itemId, {
+        ...newData,
+      });
       return res.status(200).json(itemUpdated);
     } catch (error) {
       return next(error);
