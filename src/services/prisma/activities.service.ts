@@ -77,7 +77,7 @@ export class ActivityRepositoryImpl implements ActivityRepository {
       where: { id: id },
     });
 
-    if (targetItem == null) throw new ItemNotFoundError(itemId); // updated this to a custom error
+    if (targetItem == null) throw new ItemNotFoundError(itemId);
     if (targetActivity == null) throw new ActivityNotFoundError(id);
 
     targetActivity.itemsId.push(itemId);
@@ -97,7 +97,7 @@ export class ActivityRepositoryImpl implements ActivityRepository {
       rejectOnNotFound: true,
     });
 
-    if (targetIllness == null) throw new IllnessNotFoundError(id); // updated this to a custom error
+    if (targetIllness == null) throw new IllnessNotFoundError(id);
     if (targetActivity == null) throw new ActivityNotFoundError(id);
 
     targetActivity.illnessesId.push(illnessId);

@@ -12,6 +12,6 @@ export interface ItemsRepository {
   update(id: string, newData: ItemCreateData): Promise<Item>;
   delete(id: string): Promise<void>;
   getAll(): Promise<Item[]>;
-  getById(id: string): Promise<Item | null>;
+  getById(id: string): Promise<Item>;
   addActivity(activityId: string, itemId: string): Promise<void>;
 }

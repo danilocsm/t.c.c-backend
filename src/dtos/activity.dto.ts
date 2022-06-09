@@ -1,5 +1,5 @@
 import { Difficulty } from "@prisma/client";
-import { IsEmpty, IsNotEmpty, IsString, ValidateIf } from "class-validator";
+import { IsNotEmpty, IsString, ValidateIf } from "class-validator";
 
 export class ActivityDTO {
   @IsNotEmpty()

@@ -17,11 +17,11 @@ export class UserController implements Controller {
   initializeRoutes() {
     this.router.use(authMiddleware);
 
-    this.router.post(
-      "/create",
-      validationMiddleware(UserDTO, false),
-      this.createUser
-    );
+    // this.router.post(
+    //   "/create",
+    //   validationMiddleware(UserDTO, false),
+    //   this.createUser
+    // );
 
     this.router.get("/all", this.getAllUsers);
 
@@ -36,24 +36,21 @@ export class UserController implements Controller {
     this.router.delete("/:id", this.deleteUser);
   }
 
-  private createUser = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    const { username, email, password, picture } = req.body;
-    try {
-      const newUser = await this.userService.create({
-        username,
-        email,
-        password,
-        picture,
-      });
-      return res.status(201).json(newUser);
-    } catch (error) {
-      return next(error);
-    }
-  };
+  // private createUser = async (
+  //   req: Request,
+  //   res: Response,
+  //   next: NextFunction
+  // ) => {
+  //   const user: UserDTO = req.body;
+  //   try {
+  //     const newUser = await this.userService.create({
+  //       ...user,
+  //     });
+  //     return res.status(201).json(newUser);
+  //   } catch (error) {
+  //     return next(error);
+  //   }
+  // };
 
   private updateUser = async (
     req: Request,
@@ -61,9 +58,9 @@ export class UserController implements Controller {
     next: NextFunction
   ) => {
     const userId = req.params.id;
-    const newData = req.body;
+    const newData: UserDTO = req.body;
     try {
-      const userUpdated = await this.userService.update(userId, newData);
+      const userUpdated = await this.userService.update(userId, { ...newData });
       return res.status(200).json(userUpdated);
     } catch (error) {
       return next(error);

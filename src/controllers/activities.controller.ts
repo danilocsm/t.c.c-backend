@@ -22,7 +22,7 @@ export class ActivityController implements Controller {
     this.router.get("/:id", this.getUnique);
 
     this.router.use(authMiddleware);
-    
+
     this.router.post(
       "/create",
       validationMiddleware(ActivityDTO, false),
@@ -49,16 +49,10 @@ export class ActivityController implements Controller {
     res: Response,
     next: NextFunction
   ) => {
-    const { name, description, difficulty, itemsId, illnessesId, images } =
-      req.body;
+    const activity: ActivityDTO = req.body;
     try {
       const activityCreated = await this.activityService.create({
-        name,
-        description,
-        difficulty,
-        itemsId,
-        illnessesId,
-        images,
+        ...activity,
       });
       return res.status(201).json(activityCreated);
     } catch (error) {
@@ -101,10 +95,12 @@ export class ActivityController implements Controller {
     next: NextFunction
   ) => {
     const activityId = req.params.id;
-    const newData = req.body;
+    const newData: ActivityDTO = req.body;
     let updatedActivity;
     try {
-      updatedActivity = await this.activityService.update(activityId, newData);
+      updatedActivity = await this.activityService.update(activityId, {
+        ...newData,
+      });
       return res.status(200).json(updatedActivity);
     } catch (error) {
       return next(error);
