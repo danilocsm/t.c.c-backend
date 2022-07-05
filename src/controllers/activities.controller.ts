@@ -65,10 +65,10 @@ export class ActivityController implements Controller {
     res: Response,
     next: NextFunction
   ) => {
-    const activityId = req.params.id;
+    const activityName = req.params.id;
     let retrievedActivity = null;
     try {
-      retrievedActivity = await this.activityService.getById(activityId);
+      retrievedActivity = await this.activityService.getByName(activityName);
       return res.status(200).json(retrievedActivity);
     } catch (error) {
       return next(error);

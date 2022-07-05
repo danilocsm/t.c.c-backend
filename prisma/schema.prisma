@@ -41,6 +41,7 @@ model Item {
   name         String     @unique
   price        Float
   link         String?
+  imageUrl     String?
   itemType     ItemType
   activitiesId String[]   @db.ObjectId
   activities   Activity[] @relation(fields: [activitiesId], references: [id])
@@ -98,5 +99,6 @@ enum LevelOfAttention {
 enum ItemType {
   TOY
   ACCESSORY
-  CLOTHING
+  CLOATHING
+  FOOD
 }

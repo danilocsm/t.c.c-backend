@@ -7,6 +7,6 @@ export interface ItemsRepository {
   delete(id: string): Promise<void>;
   getAll(): Promise<Item[]>;
   getById(id: string): Promise<Item>;
-  getWithFilter(filter: ItemType): Promise<Item[]>;
+  getWithFilter(filter: string): Promise<Item[]>;
   addActivity(activityId: string, itemId: string): Promise<void>;
 }

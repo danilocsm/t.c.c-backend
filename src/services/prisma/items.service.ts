@@ -6,18 +6,28 @@ import {
   ItemNotFoundError,
 } from "../../errors/items.error";
 import { prisma } from "../../prisma";
-import {
-  ItemsRepository,
-} from "../../repositories/items.repository";
+import { ItemsRepository } from "../../repositories/items.repository";
 
 export class ItemsRepositoryImpl implements ItemsRepository {
-  async create({ name, price, link, itemType }: ItemDTO): Promise<Item> {
+  async create({
+    name,
+    price,
+    link,
+    itemType,
+    imageUrl,
+  }: ItemDTO): Promise<Item> {
     const itemExists = await prisma.item.findUnique({ where: { name: name } });
 
     if (itemExists != null) throw new ItemAlreadyExistsError(name);
 
     const itemCreated = await prisma.item.create({
-      data: { name: name, price: price, link: link, itemType: itemType },
+      data: {
+        name: name,
+        price: price,
+        link: link,
+        itemType: itemType,
+        imageUrl: imageUrl,
+      },
     });
     return itemCreated;
   }
@@ -56,7 +66,9 @@ export class ItemsRepositoryImpl implements ItemsRepository {
   }
 
   async getWithFilter(filter: ItemType): Promise<Item[]> {
-    const recoverdedItems = await prisma.item.findMany({where:{ itemType: filter}});
+    const recoverdedItems = await prisma.item.findMany({
+      where: { itemType: filter },
+    });
 
     return recoverdedItems;
   }
