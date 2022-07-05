@@ -1,4 +1,4 @@
-import { Item } from "@prisma/client";
+import { Item, ItemType } from "@prisma/client";
 import { ItemDTO } from "../dtos/item.dto";
 
 export interface ItemsRepository {
@@ -7,5 +7,6 @@ export interface ItemsRepository {
   delete(id: string): Promise<void>;
   getAll(): Promise<Item[]>;
   getById(id: string): Promise<Item>;
+  getWithFilter(filter: ItemType): Promise<Item[]>;
   addActivity(activityId: string, itemId: string): Promise<void>;
 }

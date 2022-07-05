@@ -1,3 +1,4 @@
+import { ItemType } from "@prisma/client";
 import express, { NextFunction, Request, Response } from "express";
 import { ItemDTO } from "../dtos/item.dto";
 import Controller from "../interfaces/controller.interface";
@@ -18,6 +19,8 @@ export class ItemsController implements Controller {
     this.router.get("/all", this.getAllItems);
 
     this.router.get("/:id", this.getUnique);
+
+    this.router.get("/all/:filter", this.getFilteredItems);
 
     this.router.use(authMiddleware);
 
@@ -76,6 +79,22 @@ export class ItemsController implements Controller {
     try {
       const allItems = await this.itemsService.getAll();
       return res.status(200).json(allItems);
+    } catch (error) {
+      return next(error);
+    }
+  };
+
+  private getFilteredItems = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const filter = req.params.filter;
+      const filteredItems = await this.itemsService.getWithFilter(
+        req.params.filter as ItemType
+      );
+      return res.status(200).json(filteredItems);
     } catch (error) {
       return next(error);
     }

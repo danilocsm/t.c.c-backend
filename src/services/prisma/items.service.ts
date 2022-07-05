@@ -1,4 +1,4 @@
-import { Item } from "@prisma/client";
+import { Item, ItemType } from "@prisma/client";
 import { ItemDTO } from "../../dtos/item.dto";
 import { ActivityNotFoundError } from "../../errors/activity.error";
 import {
@@ -53,6 +53,12 @@ export class ItemsRepositoryImpl implements ItemsRepository {
     if (recoveredItem == null) throw new ItemNotFoundError(id);
 
     return recoveredItem;
+  }
+
+  async getWithFilter(filter: ItemType): Promise<Item[]> {
+    const recoverdedItems = await prisma.item.findMany({where:{ itemType: filter}});
+
+    return recoverdedItems;
   }
 
   async addActivity(itemId: string, activityId: string): Promise<void> {
