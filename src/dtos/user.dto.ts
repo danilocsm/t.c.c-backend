@@ -1,14 +1,13 @@
 import { Role } from "@prisma/client";
-import { Contains, IsNotEmpty, IsString, ValidateIf } from "class-validator";
+import { IsEmail, IsNotEmpty, IsString, ValidateIf } from "class-validator";
 
 export class UserDTO {
   @IsString()
   @IsNotEmpty()
   username: string;
 
-  @IsString()
   @IsNotEmpty()
-  @Contains("@", { message: "Invalid email address" })
+  @IsEmail({ message: "Invalid email address" })
   email: string;
 
   @IsString()

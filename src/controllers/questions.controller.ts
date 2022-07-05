@@ -1,3 +1,5 @@
+import { QuestionDTO } from "../dtos/question.dto";
+import validationMiddleware from "../middlewares/validation.middleware";
 import express, { Response, Request, NextFunction, Router } from "express";
 import Controller from "../interfaces/controller.interface";
 import { QuestionsRepositoryImpl } from "../services/prisma/questions.service";
@@ -13,7 +15,7 @@ export class QuestionsController implements Controller {
   }
 
   initializeRoutes(): void {
-    this.router.post("create", this.createQuestion);
+    this.router.post("/create", validationMiddleware(QuestionDTO, false), this.createQuestion);
 
     this.router.get("/all", this.getAllQuestions);
 
