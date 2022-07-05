@@ -60,6 +60,14 @@ model Illness {
   @@map("illnesses")
 }
 
+model Question {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  contactEmail String
+  text         String
+
+  @@map("questions")
+}
+
 model Testimonial {
   id     String  @id @default(auto()) @map("_id") @db.ObjectId
   text   String

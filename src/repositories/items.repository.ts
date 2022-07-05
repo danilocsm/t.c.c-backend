@@ -1,15 +1,9 @@
-import { Item, ItemType } from "@prisma/client";
-
-export interface ItemCreateData {
-  name: string;
-  price: number;
-  link?: string;
-  itemType: ItemType;
-}
+import { Item } from "@prisma/client";
+import { ItemDTO } from "../dtos/item.dto";
 
 export interface ItemsRepository {
-  create(item: ItemCreateData): Promise<Item>;
-  update(id: string, newData: ItemCreateData): Promise<Item>;
+  create(item: ItemDTO): Promise<Item>;
+  update(id: string, newData: ItemDTO): Promise<Item>;
   delete(id: string): Promise<void>;
   getAll(): Promise<Item[]>;
   getById(id: string): Promise<Item>;

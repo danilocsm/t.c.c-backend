@@ -14,7 +14,8 @@ const app = new App(
     new ItemsController(),
     new TestimonialController(),
     new AuthenticationController(),
-    new UserController()
+    new UserController(),
+    new QuestionController(),
   ],
   3333
 );

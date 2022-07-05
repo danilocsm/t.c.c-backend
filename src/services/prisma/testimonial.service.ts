@@ -1,12 +1,12 @@
 import { Testimonial } from "@prisma/client";
+import { TestimonialDTO } from "../../dtos/testimonial.dto";
 import { prisma } from "../../prisma";
 import {
-  TestimonialCreateData,
   TestimonialRepository,
 } from "../../repositories/testimonial.repository";
 
 export class TestimonialRepositoryImpl implements TestimonialRepository {
-  async create({ text, author }: TestimonialCreateData): Promise<Testimonial> {
+  async create({ text, author }: TestimonialDTO): Promise<Testimonial> {
     const newTestimonial = await prisma.testimonial.create({
       data: { text: text, author: author },
     });

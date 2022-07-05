@@ -1,12 +1,9 @@
 import { Testimonial } from "@prisma/client";
+import { TestimonialDTO } from "../dtos/testimonial.dto";
 
-export interface TestimonialCreateData {
-  text: string;
-  author?: string;
-}
 
 export interface TestimonialRepository {
-  create(data: TestimonialCreateData): Promise<Testimonial>;
+  create(data: TestimonialDTO): Promise<Testimonial>;
   delete(id: string): Promise<void>;
   getAll(): Promise<Testimonial[]>;
 }

@@ -1,4 +1,5 @@
 import { Item } from "@prisma/client";
+import { ItemDTO } from "../../dtos/item.dto";
 import { ActivityNotFoundError } from "../../errors/activity.error";
 import {
   ItemAlreadyExistsError,
@@ -6,12 +7,11 @@ import {
 } from "../../errors/items.error";
 import { prisma } from "../../prisma";
 import {
-  ItemCreateData,
   ItemsRepository,
 } from "../../repositories/items.repository";
 
 export class ItemsRepositoryImpl implements ItemsRepository {
-  async create({ name, price, link, itemType }: ItemCreateData): Promise<Item> {
+  async create({ name, price, link, itemType }: ItemDTO): Promise<Item> {
     const itemExists = await prisma.item.findUnique({ where: { name: name } });
 
     if (itemExists != null) throw new ItemAlreadyExistsError(name);
@@ -22,7 +22,7 @@ export class ItemsRepositoryImpl implements ItemsRepository {
     return itemCreated;
   }
 
-  async update(id: string, newData: ItemCreateData): Promise<Item> {
+  async update(id: string, newData: ItemDTO): Promise<Item> {
     const itemExists = await prisma.item.findUnique({ where: { id: id } });
 
     if (itemExists == null) throw new ItemNotFoundError(id);

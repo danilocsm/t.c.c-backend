@@ -1,8 +1,8 @@
 import { User } from "@prisma/client";
+import { UserDTO } from "../../dtos/user.dto";
 import { UserAlreadyExists, UserNotFoundError } from "../../errors/user.error";
 import { prisma } from "../../prisma";
 import {
-  UserCreateData,
   UserRepository,
 } from "../../repositories/users.repository";
 
@@ -12,7 +12,7 @@ export class UserRepositoryImpl implements UserRepository {
     email,
     password,
     picture,
-  }: UserCreateData): Promise<User> {
+  }: UserDTO): Promise<User> {
     const userExists = await prisma.user.findUnique({
       where: { email: email },
     });
@@ -25,7 +25,7 @@ export class UserRepositoryImpl implements UserRepository {
     return userCreated;
   }
 
-  async update(id: string, newData: UserCreateData): Promise<User> {
+  async update(id: string, newData: UserDTO): Promise<User> {
     const userExists = await prisma.user.findUnique({ where: { id: id } });
 
     if (userExists == null) throw new UserNotFoundError(id);
