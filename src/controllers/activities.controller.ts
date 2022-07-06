@@ -21,7 +21,11 @@ export class ActivityController implements Controller {
 
     this.router.get("/:id", this.getUnique);
 
-    this.router.use(authMiddleware);
+    this.router.get("/:id/getObjects", this.getObjects);
+
+    this.router.get("/:id/getIllnesses", this.getIllnesses);
+
+    // this.router.use(authMiddleware);
 
     this.router.post(
       "/create",
@@ -70,6 +74,38 @@ export class ActivityController implements Controller {
     try {
       retrievedActivity = await this.activityService.getByName(activityName);
       return res.status(200).json(retrievedActivity);
+    } catch (error) {
+      return next(error);
+    }
+  };
+
+  private getObjects = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const activityName = req.params.id;
+    try {
+      const activityObjects = await this.activityService.getActivityObjects(
+        activityName
+      );
+      return res.status(200).json(activityObjects);
+    } catch (error) {
+      return next(error);
+    }
+  };
+
+  private getIllnesses = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const activityName = req.params.id;
+    try {
+      const activityIllnesses = await this.activityService.getActivityObjects(
+        activityName
+      );
+      return res.status(200).json(activityIllnesses);
     } catch (error) {
       return next(error);
     }

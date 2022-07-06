@@ -1,4 +1,4 @@
-import { Activity } from "@prisma/client";
+import { Activity, Illness, Item } from "@prisma/client";
 import { ActivityDTO } from "../../dtos/activity.dto";
 import {
   ActivityAlreadyExistsError,
@@ -18,6 +18,7 @@ export class ActivityRepositoryImpl implements ActivityRepository {
     illnessesId,
     images,
   }: ActivityDTO): Promise<Activity> {
+    name = name.toLowerCase();
     const activity = await prisma.activity.findUnique({
       where: { name: name },
     });
@@ -77,6 +78,42 @@ export class ActivityRepositoryImpl implements ActivityRepository {
     if (targetActivity == null) throw new ActivityNotFoundError(name);
 
     return targetActivity;
+  }
+
+  async getActivityObjects(name: string): Promise<Item[]> {
+    const items: Item[] = [];
+    const targetActivity = await prisma.activity.findUnique({
+      where: { name: name },
+    });
+
+    if (targetActivity == null) throw new ActivityNotFoundError(name);
+
+    for (let i = 0; i < targetActivity.itemsId.length; i++) {
+      let item: Item | null = await prisma.item.findUnique({
+        where: { id: targetActivity.itemsId[i] },
+      });
+      if (item !== null) items.push(item);
+    }
+
+    return items;
+  }
+
+  async getActivityIllnesses(name: string): Promise<Illness[]> {
+    const illnesses: Illness[] = [];
+    const targetActivity = await prisma.activity.findUnique({
+      where: { name: name },
+    });
+
+    if (targetActivity == null) throw new ActivityNotFoundError(name);
+
+    for (let i = 0; i < targetActivity.itemsId.length; i++) {
+      let illness: Illness | null = await prisma.illness.findUnique({
+        where: { id: targetActivity.itemsId[i] },
+      });
+      if (illness !== null) illnesses.push(illness);
+    }
+
+    return illnesses;
   }
 
   async addItem(id: string, itemId: string): Promise<void> {
