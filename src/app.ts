@@ -16,7 +16,7 @@ export default class App {
 
   private initializeMiddlewares(controllers: Controller[]) {
     this.app.use(cors());
-    this.app.use(express.json({ limit: "50mb" }));
+    this.app.use(express.json({ limit: "100mb" }));
     this.app.use(cookieParser());
     this.initializeControllers(controllers);
     this.app.use(errorMiddleware); // 

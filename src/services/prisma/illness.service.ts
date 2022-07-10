@@ -67,21 +67,21 @@ export class IllnessRepositoryImpl implements IllnessRepository {
     return targetIllness;
   }
 
-  async addActivity(id: string, activityId: string): Promise<void> {
-    const targetActivity = await prisma.activity.findUnique({
-      where: { id: activityId },
-    });
-    const targetIllness = await prisma.illness.findUnique({
-      where: { id: id },
-    });
+  // async addActivity(id: string, activityId: string): Promise<void> {
+  //   const targetActivity = await prisma.activity.findUnique({
+  //     where: { id: activityId },
+  //   });
+  //   const targetIllness = await prisma.illness.findUnique({
+  //     where: { id: id },
+  //   });
 
-    if (targetActivity == null) throw new ActivityNotFoundError(activityId);
-    if (targetIllness == null) throw new IllnessNotFoundError(id);
+  //   if (targetActivity == null) throw new ActivityNotFoundError(activityId);
+  //   if (targetIllness == null) throw new IllnessNotFoundError(id);
 
-    targetIllness.activitiesId.push(activityId);
-    await prisma.illness.update({
-      data: { activitiesId: targetIllness.activitiesId },
-      where: { id: id },
-    });
-  }
+  //   targetIllness.activitiesId.push(activityId);
+  //   await prisma.illness.update({
+  //     data: { activitiesId: targetIllness.activitiesId },
+  //     where: { id: id },
+  //   });
+  // }
 }

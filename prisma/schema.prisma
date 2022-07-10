@@ -23,15 +23,15 @@ model User {
 }
 
 model Activity {
-  id          String     @id @default(auto()) @map("_id") @db.ObjectId
-  name        String     @unique
-  description String
-  itemsId     String[]   @db.ObjectId
-  items       Item[]     @relation(fields: [itemsId], references: [id])
-  illnessesId String[]   @db.ObjectId
-  illnesses   Illness[]  @relation(fields: [illnessesId], references: [id])
-  difficulty  Difficulty
-  images      String[]
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  name         String     @unique
+  description  String
+  observations String
+  itemsId      String[]   @db.ObjectId
+  items        Item[]     @relation(fields: [itemsId], references: [id])
+  illnesses    String
+  difficulty   Difficulty
+  image        String?
 
   @@map("activities")
 }
@@ -55,8 +55,6 @@ model Illness {
   description      String
   symptoms         String[]
   levelOfAttention LevelOfAttention
-  activitiesId     String[]         @db.ObjectId
-  activities       Activity[]       @relation(fields: [activitiesId], references: [id])
 
   @@map("illnesses")
 }

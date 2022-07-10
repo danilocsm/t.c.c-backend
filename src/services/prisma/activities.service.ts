@@ -1,10 +1,9 @@
-import { Activity, Illness, Item } from "@prisma/client";
+import { Activity, Item } from "@prisma/client";
 import { ActivityDTO } from "../../dtos/activity.dto";
 import {
   ActivityAlreadyExistsError,
   ActivityNotFoundError,
 } from "../../errors/activity.error";
-import { IllnessNotFoundError } from "../../errors/illness.error";
 import { ItemNotFoundError } from "../../errors/items.error";
 import { prisma } from "../../prisma";
 import { ActivityRepository } from "../../repositories/activities.repository";
@@ -13,10 +12,11 @@ export class ActivityRepositoryImpl implements ActivityRepository {
   async create({
     name,
     description,
+    observations,
     difficulty,
     itemsId,
-    illnessesId,
-    images,
+    illnesses,
+    image,
   }: ActivityDTO): Promise<Activity> {
     name = name.toLowerCase();
     const activity = await prisma.activity.findUnique({
@@ -26,7 +26,15 @@ export class ActivityRepositoryImpl implements ActivityRepository {
     if (activity != null) throw new ActivityAlreadyExistsError(activity.name);
 
     const newActivity = await prisma.activity.create({
-      data: { name, description, difficulty, itemsId, illnessesId, images },
+      data: {
+        name,
+        description,
+        observations,
+        difficulty,
+        itemsId,
+        illnesses,
+        image,
+      },
     });
     return newActivity;
   }
@@ -98,22 +106,14 @@ export class ActivityRepositoryImpl implements ActivityRepository {
     return items;
   }
 
-  async getActivityIllnesses(name: string): Promise<Illness[]> {
-    const illnesses: Illness[] = [];
+  async getActivityIllnesses(name: string): Promise<String> {
     const targetActivity = await prisma.activity.findUnique({
       where: { name: name },
     });
 
     if (targetActivity == null) throw new ActivityNotFoundError(name);
 
-    for (let i = 0; i < targetActivity.itemsId.length; i++) {
-      let illness: Illness | null = await prisma.illness.findUnique({
-        where: { id: targetActivity.itemsId[i] },
-      });
-      if (illness !== null) illnesses.push(illness);
-    }
-
-    return illnesses;
+    return targetActivity.illnesses;
   }
 
   async addItem(id: string, itemId: string): Promise<void> {
@@ -134,25 +134,25 @@ export class ActivityRepositoryImpl implements ActivityRepository {
     });
   }
 
-  async addIllness(id: string, illnessId: string): Promise<void> {
-    const targetIllness = await prisma.illness.findUnique({
-      where: { id: illnessId },
-      rejectOnNotFound: true,
-    });
-    const targetActivity = await prisma.activity.findUnique({
-      where: { id: id },
-      rejectOnNotFound: true,
-    });
+  // async addIllness(id: string, illnessId: string): Promise<void> {
+  //   const targetIllness = await prisma.illness.findUnique({
+  //     where: { id: illnessId },
+  //     rejectOnNotFound: true,
+  //   });
+  //   const targetActivity = await prisma.activity.findUnique({
+  //     where: { id: id },
+  //     rejectOnNotFound: true,
+  //   });
 
-    if (targetIllness == null) throw new IllnessNotFoundError(id);
-    if (targetActivity == null) throw new ActivityNotFoundError(id);
+  //   if (targetIllness == null) throw new IllnessNotFoundError(id);
+  //   if (targetActivity == null) throw new ActivityNotFoundError(id);
 
-    targetActivity.illnessesId.push(illnessId);
-    await prisma.activity.update({
-      data: { illnessesId: targetActivity.illnessesId },
-      where: { id: id },
-    });
-  }
+  //   targetActivity.illnessesId.push(illnessId);
+  //   await prisma.activity.update({
+  //     data: { illnessesId: targetActivity.illnessesId },
+  //     where: { id: id },
+  //   });
+  // }
 
   async addImage(id: string, image: string): Promise<void> {
     const targetActivity = await prisma.activity.findUnique({
@@ -162,9 +162,8 @@ export class ActivityRepositoryImpl implements ActivityRepository {
 
     if (targetActivity == null) throw new ActivityNotFoundError(id);
 
-    targetActivity.images.push(image);
     await prisma.activity.update({
-      data: { images: targetActivity.images },
+      data: { image: image },
       where: { id: id },
     });
   }

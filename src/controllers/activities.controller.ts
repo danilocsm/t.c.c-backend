@@ -41,7 +41,7 @@ export class ActivityController implements Controller {
 
     this.router.patch("/:id/newItem", this.addItemToActivity);
 
-    this.router.patch("/:id/newIllness", this.addIllnessToActivity);
+    // this.router.patch("/:id/newIllness", this.addIllnessToActivity);
 
     this.router.patch("/:id/newImage", this.addImageToActivity);
 
@@ -187,18 +187,18 @@ export class ActivityController implements Controller {
     }
   };
 
-  private addIllnessToActivity = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    const activityId = req.params.id;
-    const { illnessId } = req.body;
-    try {
-      await this.activityService.addIllness(activityId, illnessId);
-      return res.status(204).json({});
-    } catch (error) {
-      return next(error);
-    }
-  };
+  // private addIllnessToActivity = async (
+  //   req: Request,
+  //   res: Response,
+  //   next: NextFunction
+  // ) => {
+  //   const activityId = req.params.id;
+  //   const { illnessId } = req.body;
+  //   try {
+  //     await this.activityService.addIllness(activityId, illnessId);
+  //     return res.status(204).json({});
+  //   } catch (error) {
+  //     return next(error);
+  //   }
+  // };
 }

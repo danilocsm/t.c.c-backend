@@ -85,7 +85,7 @@ export class ItemsRepositoryImpl implements ItemsRepository {
     if (targetActivity == null) throw new ActivityNotFoundError(activityId);
 
     targetItem.activitiesId.push(activityId);
-    await prisma.illness.update({
+    await prisma.item.update({
       data: { activitiesId: targetItem.activitiesId },
       where: { id: itemId },
     });

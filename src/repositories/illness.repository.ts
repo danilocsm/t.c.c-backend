@@ -7,5 +7,5 @@ export interface IllnessRepository {
   delete(id: string): Promise<void>;
   getAll(): Promise<Illness[]>;
   getById(id: string): Promise<Illness>;
-  addActivity(id: string, activityId: string): Promise<void>;
+  // addActivity(id: string, activityId: string): Promise<void>;
 }
