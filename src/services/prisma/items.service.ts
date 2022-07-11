@@ -72,22 +72,4 @@ export class ItemsRepositoryImpl implements ItemsRepository {
 
     return recoverdedItems;
   }
-
-  async addActivity(itemId: string, activityId: string): Promise<void> {
-    const targetItem = await prisma.item.findUnique({
-      where: { id: itemId },
-    });
-    const targetActivity = await prisma.activity.findUnique({
-      where: { id: activityId },
-    });
-
-    if (targetItem == null) throw new ItemNotFoundError(itemId);
-    if (targetActivity == null) throw new ActivityNotFoundError(activityId);
-
-    targetItem.activitiesId.push(activityId);
-    await prisma.item.update({
-      data: { activitiesId: targetItem.activitiesId },
-      where: { id: itemId },
-    });
-  }
 }

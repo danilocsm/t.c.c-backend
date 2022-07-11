@@ -1,4 +1,4 @@
-import { Difficulty } from "@prisma/client";
+import { ActivityItem, Difficulty } from "@prisma/client";
 import { IsNotEmpty, IsString, ValidateIf } from "class-validator";
 
 export class ActivityDTO {
@@ -21,9 +21,8 @@ export class ActivityDTO {
   @IsString({ each: true })
   illnesses: string;
 
-  @ValidateIf((obj) => obj.itemsId != undefined)
-  @IsString({ each: true })
-  itemsId?: string[];
+  @IsNotEmpty()
+  items: ActivityItem[];
 
   @ValidateIf((obj) => obj.image != undefined)
   @IsString({ each: true, message: "Image must be string." })
@@ -34,7 +33,7 @@ export class ActivityDTO {
     description: string,
     observations: string,
     difficulty: Difficulty,
-    itemsId: string[],
+    items: ActivityItem[],
     illnesses: string,
     image: string
   ) {
@@ -42,7 +41,7 @@ export class ActivityDTO {
     this.description = description;
     this.observations = observations;
     this.difficulty = difficulty;
-    this.itemsId = itemsId;
+    this.items = items;
     this.illnesses = illnesses;
     this.image = image;
   }

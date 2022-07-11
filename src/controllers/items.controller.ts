@@ -36,8 +36,6 @@ export class ItemsController implements Controller {
       this.updateItem
     );
 
-    this.router.patch("/:id/newActivity", this.addActivityToItem);
-
     this.router.delete("/:id", this.deleteItem);
   }
 
@@ -125,21 +123,6 @@ export class ItemsController implements Controller {
     const itemId = req.params.id;
     try {
       await this.itemsService.delete(itemId);
-      return res.status(204).json({});
-    } catch (error) {
-      return next(error);
-    }
-  };
-
-  private addActivityToItem = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    const itemId = req.params.id;
-    const { activityId } = req.body;
-    try {
-      await this.itemsService.addActivity(itemId, activityId);
       return res.status(204).json({});
     } catch (error) {
       return next(error);

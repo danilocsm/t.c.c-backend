@@ -86,7 +86,7 @@ export class ActivityController implements Controller {
   ) => {
     const activityName = req.params.id;
     try {
-      const activityObjects = await this.activityService.getActivityObjects(
+      const activityObjects = await this.activityService.getActivityItems(
         activityName
       );
       return res.status(200).json(activityObjects);
@@ -102,7 +102,7 @@ export class ActivityController implements Controller {
   ) => {
     const activityName = req.params.id;
     try {
-      const activityIllnesses = await this.activityService.getActivityObjects(
+      const activityIllnesses = await this.activityService.getActivityItems(
         activityName
       );
       return res.status(200).json(activityIllnesses);

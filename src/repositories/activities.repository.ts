@@ -1,4 +1,4 @@
-import { Activity, Item } from "@prisma/client";
+import { Activity, ActivityItem, Item } from "@prisma/client";
 import { ActivityDTO } from "../dtos/activity.dto";
 
 export interface ActivityRepository {
@@ -8,9 +8,8 @@ export interface ActivityRepository {
   getAll(): Promise<Activity[]>;
   getById(id: string): Promise<Activity>;
   getByName(name: string): Promise<Activity>;
-  getActivityObjects(name: string): Promise<Item[]>;
+  getActivityItems(name: string): Promise<ActivityItem[]>;
   getActivityIllnesses(name: string): Promise<String>;
-  addItem(id: string, itemId: string): Promise<void>;
-  // addIllness(id: string, illnessId: string): Promise<void>;
+  addItem(id: string, item: ActivityItem): Promise<void>;
   addImage(id: string, image: string): Promise<void>;
 }

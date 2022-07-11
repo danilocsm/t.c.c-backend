@@ -1,10 +1,9 @@
-import { Activity, Item } from "@prisma/client";
+import { Activity, ActivityItem } from "@prisma/client";
 import { ActivityDTO } from "../../dtos/activity.dto";
 import {
   ActivityAlreadyExistsError,
   ActivityNotFoundError,
 } from "../../errors/activity.error";
-import { ItemNotFoundError } from "../../errors/items.error";
 import { prisma } from "../../prisma";
 import { ActivityRepository } from "../../repositories/activities.repository";
 
@@ -14,7 +13,7 @@ export class ActivityRepositoryImpl implements ActivityRepository {
     description,
     observations,
     difficulty,
-    itemsId,
+    items,
     illnesses,
     image,
   }: ActivityDTO): Promise<Activity> {
@@ -31,7 +30,7 @@ export class ActivityRepositoryImpl implements ActivityRepository {
         description,
         observations,
         difficulty,
-        itemsId,
+        items,
         illnesses,
         image,
       },
@@ -88,22 +87,14 @@ export class ActivityRepositoryImpl implements ActivityRepository {
     return targetActivity;
   }
 
-  async getActivityObjects(name: string): Promise<Item[]> {
-    const items: Item[] = [];
+  async getActivityItems(name: string): Promise<ActivityItem[]> {
     const targetActivity = await prisma.activity.findUnique({
       where: { name: name },
     });
 
     if (targetActivity == null) throw new ActivityNotFoundError(name);
 
-    for (let i = 0; i < targetActivity.itemsId.length; i++) {
-      let item: Item | null = await prisma.item.findUnique({
-        where: { id: targetActivity.itemsId[i] },
-      });
-      if (item !== null) items.push(item);
-    }
-
-    return items;
+    return targetActivity.items;
   }
 
   async getActivityIllnesses(name: string): Promise<String> {
@@ -116,43 +107,19 @@ export class ActivityRepositoryImpl implements ActivityRepository {
     return targetActivity.illnesses;
   }
 
-  async addItem(id: string, itemId: string): Promise<void> {
-    const targetItem = await prisma.item.findUnique({
-      where: { id: itemId },
-    });
+  async addItem(id: string, item: ActivityItem): Promise<void> {
     const targetActivity = await prisma.activity.findUnique({
       where: { id: id },
     });
 
-    if (targetItem == null) throw new ItemNotFoundError(itemId);
     if (targetActivity == null) throw new ActivityNotFoundError(id);
 
-    targetActivity.itemsId.push(itemId);
+    targetActivity.items.push(item);
     await prisma.activity.update({
-      data: { itemsId: targetActivity.itemsId },
+      data: { items: targetActivity.items },
       where: { id: id },
     });
   }
-
-  // async addIllness(id: string, illnessId: string): Promise<void> {
-  //   const targetIllness = await prisma.illness.findUnique({
-  //     where: { id: illnessId },
-  //     rejectOnNotFound: true,
-  //   });
-  //   const targetActivity = await prisma.activity.findUnique({
-  //     where: { id: id },
-  //     rejectOnNotFound: true,
-  //   });
-
-  //   if (targetIllness == null) throw new IllnessNotFoundError(id);
-  //   if (targetActivity == null) throw new ActivityNotFoundError(id);
-
-  //   targetActivity.illnessesId.push(illnessId);
-  //   await prisma.activity.update({
-  //     data: { illnessesId: targetActivity.illnessesId },
-  //     where: { id: id },
-  //   });
-  // }
 
   async addImage(id: string, image: string): Promise<void> {
     const targetActivity = await prisma.activity.findUnique({
