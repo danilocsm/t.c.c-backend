@@ -63,9 +63,11 @@ model Illness {
 }
 
 model Question {
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
   contactEmail String
   text         String
+  isAnswered   Boolean @default(false)
 
   @@map("questions")
 }

@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import Controller from "./interfaces/controller.interface";
 import errorMiddleware from "./middlewares/error.middleware";
+import "reflect-metadata";
 
 export default class App {
   public app: express.Application;

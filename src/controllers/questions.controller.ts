@@ -15,11 +15,17 @@ export class QuestionsController implements Controller {
   }
 
   initializeRoutes(): void {
-    this.router.post("/create", validationMiddleware(QuestionDTO, false), this.createQuestion);
+    this.router.post(
+      "/create",
+      validationMiddleware(QuestionDTO, false),
+      this.createQuestion
+    );
 
     this.router.get("/all", this.getAllQuestions);
 
     this.router.delete("/:id", this.deleteQuestion);
+
+    this.router.patch("/:id", this.sendQuestionResponse);
   }
 
   private createQuestion = async (
@@ -57,6 +63,22 @@ export class QuestionsController implements Controller {
     try {
       const id = req.params.id;
       await this.questionsService.delete(id);
+    } catch (error) {
+      return next(error);
+    }
+  };
+
+  private sendQuestionResponse = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    // TODO adicionar api para enviar email
+    try {
+      const [answer, contactEmail ] = req.body.answer;
+      const questionId = req.params.id;
+      await this.questionsService.updateStatus(questionId, true);
+      // sendEmail
     } catch (error) {
       return next(error);
     }

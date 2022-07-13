@@ -1,5 +1,7 @@
 import { ActivityItem, Difficulty } from "@prisma/client";
-import { IsNotEmpty, IsString, ValidateIf } from "class-validator";
+import { Type } from "class-transformer";
+import { IsBase64, IsNotEmpty, IsString, ValidateIf, ValidateNested } from "class-validator";
+import { ActivityItemDTO } from "./activityItem.dto";
 
 export class ActivityDTO {
   @IsNotEmpty()
@@ -21,11 +23,14 @@ export class ActivityDTO {
   @IsString({ each: true })
   illnesses: string;
 
+  @ValidateNested({each: true})
+  @Type(() => ActivityItemDTO)
   @IsNotEmpty()
   items: ActivityItem[];
 
   @ValidateIf((obj) => obj.image != undefined)
   @IsString({ each: true, message: "Image must be string." })
+  @IsBase64()
   image?: string;
 
   constructor(

@@ -148,9 +148,9 @@ export class ActivityController implements Controller {
     res: Response,
     next: NextFunction
   ) => {
-    const activityId = req.params.id;
+    const id = req.params.id;
     try {
-      await this.activityService.delete(activityId);
+      await this.activityService.delete(id);
       return res.status(204).json({});
     } catch (error) {
       return next(error);

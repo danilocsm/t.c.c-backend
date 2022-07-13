@@ -22,7 +22,7 @@ export class ItemsController implements Controller {
 
     this.router.get("/all/:filter", this.getFilteredItems);
 
-    this.router.use(authMiddleware);
+    // this.router.use(authMiddleware);
 
     this.router.post(
       "/create",

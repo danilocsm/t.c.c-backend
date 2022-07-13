@@ -59,7 +59,7 @@ export class ActivityRepositoryImpl implements ActivityRepository {
 
     if (activityExists == null) throw new ActivityNotFoundError(id);
 
-    await prisma.activity.delete({ where: { id: id } });
+    await prisma.activity.delete({ where: { id: activityExists.id } });
   }
 
   async getAll(): Promise<Activity[]> {
