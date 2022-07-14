@@ -1,6 +1,5 @@
 import { Item, ItemType } from "@prisma/client";
 import { ItemDTO } from "../../dtos/item.dto";
-import { ActivityNotFoundError } from "../../errors/activity.error";
 import {
   ItemAlreadyExistsError,
   ItemNotFoundError,

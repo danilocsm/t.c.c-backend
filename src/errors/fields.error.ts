@@ -6,7 +6,7 @@ export class FieldsInvalidError implements GenericError {
   readonly additionalInfo: any;
   constructor(additionalInfo: any) {
     this.status = 400;
-    this.message = `Invalid fields`;
+    this.message = `Invalid fields` + additionalInfo.constraints;
     this.additionalInfo = additionalInfo;
   }
 }

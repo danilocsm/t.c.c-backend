@@ -3,6 +3,7 @@ import validationMiddleware from "../middlewares/validation.middleware";
 import express, { Response, Request, NextFunction, Router } from "express";
 import Controller from "../interfaces/controller.interface";
 import { QuestionsRepositoryImpl } from "../services/prisma/questions.service";
+import authMiddleware from "../middlewares/auth.middleware";
 
 export class QuestionsController implements Controller {
   public readonly path: string = "/questions";
@@ -22,6 +23,8 @@ export class QuestionsController implements Controller {
     );
 
     this.router.get("/all", this.getAllQuestions);
+
+    this.router.use(authMiddleware);
 
     this.router.delete("/:id", this.deleteQuestion);
 

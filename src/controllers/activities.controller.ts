@@ -25,7 +25,7 @@ export class ActivityController implements Controller {
 
     this.router.get("/:id/getIllnesses", this.getIllnesses);
 
-    // this.router.use(authMiddleware);
+    this.router.use(authMiddleware);
 
     this.router.post(
       "/create",
