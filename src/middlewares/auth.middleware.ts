@@ -14,14 +14,12 @@ export default async function authMiddleware(
   res: Response,
   next: NextFunction
 ) {
-  const cookies = req.cookies;
-  if (cookies === undefined) return next(new AuthTokenMissingError());
-  if (cookies === {}) return next(new AuthTokenMissingError());
-  if (!cookies.Authorization) return next(new AuthTokenMissingError());
+  const token = req.headers.authorization;
+  if (!token) return next(new AuthTokenMissingError());
 
   const secret = process.env.TOKEN_SECRET as string;
   try {
-    jwt.verify(cookies.Authorization, secret) as DataStoredInToken;
+    jwt.verify(token, secret) as DataStoredInToken;
     return next();
   } catch (error) {
     return next(new AuthWrongTokenError());

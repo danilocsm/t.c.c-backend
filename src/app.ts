@@ -20,7 +20,7 @@ export default class App {
     this.app.use(express.json({ limit: "100mb" }));
     this.app.use(cookieParser());
     this.initializeControllers(controllers);
-    this.app.use(errorMiddleware); // 
+    this.app.use(errorMiddleware);
   }
 
   private initializeControllers(controllers: Controller[]) {

@@ -76,8 +76,7 @@ export class AuthenticationController implements Controller {
       });
       newUser.password = "";
       const tokenData = this.createToken(newUser);
-      res.setHeader("Set-Cookie", [this.createCookie(tokenData)]);
-      return res.status(201).json(newUser);
+      return res.status(201).json({user: newUser.id, token: tokenData.token});
     } catch (error) {
       return next(error);
     }
@@ -91,8 +90,7 @@ export class AuthenticationController implements Controller {
       if (!isPasswordMatch) return next(new AuthWrongCredentialsError());
       user.password = "";
       const tokenData = this.createToken(user);
-      res.setHeader("Set-Cookie", [this.createCookie(tokenData)]);
-      return res.status(200).json(user);
+      return res.status(200).json({user: user.id, token: tokenData.token});
     } catch (error) {
       return next(new AuthWrongCredentialsError());
     }
