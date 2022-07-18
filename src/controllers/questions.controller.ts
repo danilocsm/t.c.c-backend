@@ -78,9 +78,10 @@ export class QuestionsController implements Controller {
   ) => {
     // TODO adicionar api para enviar email
     try {
-      const [answer, contactEmail ] = req.body.answer;
+      const [answer, contactEmail] = req.body.answer;
       const questionId = req.params.id;
       await this.questionsService.updateStatus(questionId, true);
+      return res.status(200).json({});
       // sendEmail
     } catch (error) {
       return next(error);
