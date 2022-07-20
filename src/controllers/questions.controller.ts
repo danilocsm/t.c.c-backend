@@ -4,6 +4,7 @@ import express, { Response, Request, NextFunction, Router } from "express";
 import Controller from "../interfaces/controller.interface";
 import { QuestionsRepositoryImpl } from "../services/prisma/questions.service";
 import authMiddleware from "../middlewares/auth.middleware";
+import { NodemailerMailAdapter } from "../services/adapters/nodemailer/nodemailer.mail.adapter";
 
 export class QuestionsController implements Controller {
   public readonly path: string = "/questions";
@@ -76,13 +77,20 @@ export class QuestionsController implements Controller {
     res: Response,
     next: NextFunction
   ) => {
-    // TODO adicionar api para enviar email
     try {
-      const [answer, contactEmail] = req.body.answer;
+      const data = req.body;
       const questionId = req.params.id;
-      await this.questionsService.updateStatus(questionId, true);
+      const nodemailer = new NodemailerMailAdapter();
+
+      await nodemailer.sendMail({
+        to: data.contactEmail,
+        subject: "Resposta da dúvida",
+        body: `<p>${data.answer} </p>`,
+      });
+
+      await this.questionsService.delete(questionId);
+
       return res.status(200).json({});
-      // sendEmail
     } catch (error) {
       return next(error);
     }
