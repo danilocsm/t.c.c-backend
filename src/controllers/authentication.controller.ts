@@ -48,7 +48,7 @@ export class AuthenticationController implements Controller {
   private createToken = (user: User): TokenData => {
     const expiresIn = 60 * 60; // one hour
     const dataStored: DataStoredInToken = {
-      id: user.email,
+      id: user.id,
     };
     return {
       expiresIn,
@@ -58,8 +58,14 @@ export class AuthenticationController implements Controller {
     };
   };
 
-  private createCookie = (tokenData: TokenData) => {
-    return `Authorization-${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn}`;
+  private createInvalidToken = (userId: string): TokenData => {
+    const expiresIn = 1;
+    return {
+      expiresIn,
+      token: jwt.sign({ id: userId }, process.env.TOKEN_SECRET as string, {
+        expiresIn,
+      }),
+    };
   };
 
   private register = async (
@@ -76,7 +82,7 @@ export class AuthenticationController implements Controller {
       });
       newUser.password = "";
       const tokenData = this.createToken(newUser);
-      return res.status(201).json({user: newUser.id, token: tokenData.token});
+      return res.status(201).json({ user: newUser.id, token: tokenData.token });
     } catch (error) {
       return next(error);
     }
@@ -90,14 +96,20 @@ export class AuthenticationController implements Controller {
       if (!isPasswordMatch) return next(new AuthWrongCredentialsError());
       user.password = "";
       const tokenData = this.createToken(user);
-      return res.status(200).json({user: user.id, token: tokenData.token});
+      return res.status(200).json({ user: user.id, token: tokenData.token });
     } catch (error) {
       return next(new AuthWrongCredentialsError());
     }
   };
 
-  private logout = (req: Request, res: Response) => {
-    res.setHeader("Set-Cookie", ["Authorization=;Max-Age=0"]);
-    res.send(200);
+  private logout = (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { userId } = req.body;
+      if (!userId) return res.status(400).json({ message: "User id missing." });
+      const tokenData = this.createInvalidToken(userId);
+      return res.status(200).json({ token: tokenData.token });
+    } catch (error) {
+      return next(error);
+    }
   };
 }
