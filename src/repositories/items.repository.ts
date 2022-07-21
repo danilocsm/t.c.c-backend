@@ -1,4 +1,4 @@
-import { Item, ItemType } from "@prisma/client";
+import { Item } from "@prisma/client";
 import { ItemDTO } from "../dtos/item.dto";
 
 export interface ItemsRepository {
