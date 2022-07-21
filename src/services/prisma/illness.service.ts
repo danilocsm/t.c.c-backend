@@ -1,6 +1,5 @@
 import { Illness } from "@prisma/client";
 import { IllnessDTO } from "../../dtos/illness.dto";
-import { ActivityNotFoundError } from "../../errors/activity.error";
 import {
   IllnessAlreadyExistsError,
   IllnessNotFoundError,

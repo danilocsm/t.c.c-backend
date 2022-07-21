@@ -96,7 +96,7 @@ export class AuthenticationController implements Controller {
       if (!isPasswordMatch) return next(new AuthWrongCredentialsError());
       user.password = "";
       const tokenData = this.createToken(user);
-      return res.status(200).json({ user: user.id, token: tokenData.token });
+      return res.status(200).json({ user: user, token: tokenData.token });
     } catch (error) {
       return next(new AuthWrongCredentialsError());
     }
