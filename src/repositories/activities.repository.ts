@@ -9,7 +9,7 @@ export interface ActivityRepository {
   getById(id: string): Promise<Activity>;
   getByName(name: string): Promise<Activity>;
   getActivityItems(name: string): Promise<ActivityItem[]>;
-  getActivityIllnesses(name: string): Promise<String>;
+  getActivityIllnesses(name: string): Promise<string>;
   addItem(id: string, item: ActivityItem): Promise<void>;
   addImage(id: string, image: string): Promise<void>;
 }

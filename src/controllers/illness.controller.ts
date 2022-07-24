@@ -89,10 +89,9 @@ export class IllnessController implements Controller {
     const illnessId = req.params.id;
     const newData: IllnessDTO = req.body;
     try {
-      const updatedIllness = await this.illnessService.update(
-        illnessId,
-        {...newData} 
-      );
+      const updatedIllness = await this.illnessService.update(illnessId, {
+        ...newData,
+      });
       return res.status(200).json(updatedIllness);
     } catch (error) {
       return next(error);
@@ -112,19 +111,4 @@ export class IllnessController implements Controller {
       return next(error);
     }
   };
-
-  // private addActivityToIllness = async (
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction
-  // ) => {
-  //   const illnessId = req.params.id;
-  //   const { activityId } = req.body;
-  //   try {
-  //     await this.illnessService.addActivity(illnessId, activityId);
-  //     return res.status(204).json({});
-  //   } catch (error) {
-  //     return next(error);
-  //   }
-  // };
 }
