@@ -2,17 +2,10 @@ import { User } from "@prisma/client";
 import { UserDTO } from "../../dtos/user.dto";
 import { UserAlreadyExists, UserNotFoundError } from "../../errors/user.error";
 import { prisma } from "../../prisma";
-import {
-  UserRepository,
-} from "../../repositories/users.repository";
+import { UserRepository } from "../../repositories/users.repository";
 
 export class UserRepositoryImpl implements UserRepository {
-  async create({
-    username,
-    email,
-    password,
-    picture,
-  }: UserDTO): Promise<User> {
+  async create({ username, email, password, picture }: UserDTO): Promise<User> {
     const userExists = await prisma.user.findUnique({
       where: { email: email },
     });

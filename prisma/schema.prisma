@@ -42,12 +42,13 @@ type ActivityItem {
 }
 
 model Item {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  name     String   @unique
-  price    Float
-  link     String?
-  imageUrl String?
-  itemType ItemType
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  name         String   @unique
+  price        Float
+  link         String?
+  imageUrl     String?
+  itemType     ItemType
+  activitiesId String[]
 
   @@map("items")
 }

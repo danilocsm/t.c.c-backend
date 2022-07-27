@@ -89,7 +89,7 @@ export class UserController implements Controller {
     const userId = req.params.id;
     try {
       const retrievedUser = await this.userService.getById(userId);
-      retrievedUser.password = ""
+      retrievedUser.password = "";
       return res.status(200).json(retrievedUser);
     } catch (error) {
       return next(error);

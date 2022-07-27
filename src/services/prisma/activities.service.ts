@@ -97,7 +97,7 @@ export class ActivityRepositoryImpl implements ActivityRepository {
     return targetActivity.items;
   }
 
-  async getActivityIllnesses(name: string): Promise<String> {
+  async getActivityIllnesses(name: string): Promise<string> {
     const targetActivity = await prisma.activity.findUnique({
       where: { name: name },
     });

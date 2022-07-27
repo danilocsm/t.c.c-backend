@@ -16,7 +16,7 @@ export class ItemsRepositoryImpl implements ItemsRepository {
     imageUrl,
   }: ItemDTO): Promise<Item> {
     const itemExists = await prisma.item.findUnique({ where: { name: name } });
-
+    
     if (itemExists != null) throw new ItemAlreadyExistsError(name);
 
     const itemCreated = await prisma.item.create({
@@ -70,5 +70,18 @@ export class ItemsRepositoryImpl implements ItemsRepository {
     });
 
     return recoverdedItems;
+  }
+
+  async addActivities(itemId: string, activitiesId: string[]): Promise<void> {
+    const targetItem = await prisma.item.findUnique({
+      where: { id: itemId },
+    });
+
+    if (targetItem === null) throw new ItemNotFoundError(itemId);
+
+    await prisma.item.update({
+      where: { id: itemId },
+      data: { activitiesId: [...targetItem.activitiesId, ...activitiesId] },
+    });
   }
 }

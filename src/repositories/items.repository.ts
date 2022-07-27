@@ -8,4 +8,5 @@ export interface ItemsRepository {
   getAll(): Promise<Item[]>;
   getById(id: string): Promise<Item>;
   getWithFilter(filter: string): Promise<Item[]>;
+  addActivities(itemId:string, activitiesId: string[]): Promise<void>;
 }
