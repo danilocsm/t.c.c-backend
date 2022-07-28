@@ -17,12 +17,6 @@ export class UserController implements Controller {
   initializeRoutes() {
     this.router.use(authMiddleware);
 
-    // this.router.post(
-    //   "/create",
-    //   validationMiddleware(UserDTO, false),
-    //   this.createUser
-    // );
-
     this.router.get("/all", this.getAllUsers);
 
     this.router.get("/:id", this.getUniqueUser);
@@ -35,22 +29,6 @@ export class UserController implements Controller {
 
     this.router.delete("/:id", this.deleteUser);
   }
-
-  // private createUser = async (
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction
-  // ) => {
-  //   const user: UserDTO = req.body;
-  //   try {
-  //     const newUser = await this.userService.create({
-  //       ...user,
-  //     });
-  //     return res.status(201).json(newUser);
-  //   } catch (error) {
-  //     return next(error);
-  //   }
-  // };
 
   private updateUser = async (
     req: Request,
