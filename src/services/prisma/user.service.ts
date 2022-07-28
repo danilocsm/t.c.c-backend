@@ -4,11 +4,18 @@ import { UserAlreadyExists, UserNotFoundError } from "../../errors/user.error";
 import { prisma } from "../../prisma";
 import { UserRepository } from "../../repositories/users.repository";
 
+const TOTAL_ALLOWED_USERS = 2;
+
 export class UserRepositoryImpl implements UserRepository {
   async create({ username, email, password, picture }: UserDTO): Promise<User> {
     const userExists = await prisma.user.findUnique({
       where: { email: email },
     });
+
+    const totalUsers = await (await prisma.user.findMany()).length;
+
+    if (totalUsers >= TOTAL_ALLOWED_USERS)
+      throw new Error("Can't create more users!");
 
     if (userExists != null) throw new UserAlreadyExists(email);
 
